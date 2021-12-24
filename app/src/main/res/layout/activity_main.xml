@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="365dp" />
+
+        <LinearLayout
+            android:id="@+id/llJ1P1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+
+            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.85">
+
+            <ProgressBar
+                android:id="@+id/pbJ1P1Salud"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="11dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:max="100"
+                android:progress="50"
+                android:progressTint="#4CAF50" />
+
+            <ProgressBar
+                android:id="@+id/pbJ1P1Energia"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="11dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:max="100"
+                android:progress="30"
+                android:progressTint="#FFC107" />
+
+            <ImageView
+                android:id="@+id/ivJ1P1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="ivJ1P1"
+                app:srcCompat="@drawable/briene" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llJ2P1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"
+
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.85">
+
+            <ProgressBar
+                android:id="@+id/pbJ2P1Salud"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="11dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:max="100"
+                android:progress="70"
+                android:progressTint="#4CAF50" />
+
+            <ProgressBar
+                android:id="@+id/pbJ2P1Energia"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="11dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:max="100"
+                android:progress="10"
+                android:progressTint="#FFC107"/>
+
+            <ImageView
+                android:id="@+id/ivJ2P1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="ivJ2P1"
+                app:srcCompat="@drawable/sandor" />
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbJ1P1H1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:foreground="@drawable/ic_atacar"
+            android:clickable="true"
+            app:layout_constraintEnd_toStartOf="@+id/fbJ1P1H2"
+            app:layout_constraintStart_toStartOf="@+id/llJ1P1"
+            app:layout_constraintBottom_toTopOf="@id/llJ1P1" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbJ1P1H2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:foreground="@drawable/ic_defender"
+            android:clickable="true"
+            app:layout_constraintStart_toEndOf="@+id/fbJ1P1H1"
+            app:layout_constraintEnd_toEndOf="@+id/llJ1P1"
+            app:layout_constraintBottom_toTopOf="@+id/llJ1P1" />
+
+        <TextView
+            android:id="@+id/tvFase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="FASE"
+            android:textColor="#9C2626"
+            android:textSize="30dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
