@@ -17,6 +17,7 @@ public class Contienda {
     private ArrayList<Accion> acciones;
     private ArrayList<Personaje> personajes;
 
+
     //Constructor
         public Contienda(Activity context, Jugador jugador1, Jugador jugador2, String fase) {
             this.context = context;
@@ -29,59 +30,32 @@ public class Contienda {
             this.personajes = new ArrayList<Personaje>();
         }
 
-    //Getters and Setters
+
+    //Getters
         public String getFase () { return this.fase; }
-    
+        
+        public Jugador getJugador (Personaje personaje) {
+            if (personaje.getJugador() == 1)
+                return jugador1;
+            else
+                return jugador2;
+        }
+
+    //Setters
         public void setFase (String fase) { this.fase = fase; }
 
-    //Metodos Gestion Elementos Visuales
-        public void actualizarTvFase ()
-        {
-            TextView tvFase = context.findViewById(R.id.tvFase);
-            tvFase.setText(pSeleccionado.getNombre() + ": " + this.fase);
-        }
-    
+
     //Metodos de Gestión del Combate
         public Personaje pSeleccionado () {
             return this.personajes.get(turno);
         }
     
         public void iniciarRonda () {
-    
-            establecerTurnos(jugador1, jugador2);
-            actualizarModificadores(personajes);
-            seleccionarPersonaje(personajes.get(turno));
-    
+            establecerTurnos();
+            actualizarModificadores();
+            iniciarTurno(pSeleccionado());
         }
-    
-        public void declararAccion (String habilidad) {
-    
-            setFase("DECLARACION");
-    
-            declaracion.setEjecutor(pSeleccionado());
-            declaracion.setHabilidad(habilidad);
-    
-            if (habilidad == "DEFENDER") {
-               declaracion.setPrioridad((float) 100 + pSeleccionado().getVoluntad() / 100);
-            } else {
-               declaracion.setPrioridad(pSeleccionado().getIniciativa());
-            }
-    
-            if (habilidad == "ATACAR") {
-               setFase("SELECCIONAR.OBJETIVO");
-               //iniciarModoSeleccion();
-            } else {
-               acciones.add(declaracion);
-               siguienteTurno();
-            }
-        }
-    
-        public void seleccionarObjetivo(Jugador jugador, Integer posicion) {
-            declaracion.setVictimas(jugador.getEquipo().get(posicion));
-            acciones.add(declaracion);
-            siguienteTurno();
-        }
-    
+
         public void establecerTurnos(Jugador jugador1, Jugador jugador2) {
     
             personajes.clear();
@@ -107,21 +81,8 @@ public class Contienda {
                 }
             }
         }
-    
-        public void siguienteTurno() {
-    
-            turno++;
-            if (turno >= personajes.size()){
-                ejecutarAcciones();
-                establecerTurnos(jugador1, jugador2);
-                acciones.clear();
-                turno = 0;
-            }
-    
-            seleccionarPersonaje(personajes.get(turno));
-        }
-    
-        public void seleccionarPersonaje (Personaje personaje) {
+
+        public void iniciarTurno (Personaje personaje) {
     
             declaracion = new Accion();
     
@@ -134,19 +95,53 @@ public class Contienda {
                 acciones.add(declaracion);
                 siguienteTurno();
             } else {
-                //mostrar habilidades
+                //mostrar floatingButtons
                 setFase("SELECCIONAR.ACCION");
+                actualizarTvFase();
             }
         }
+
+        public void declararAccion (String habilidad) {
     
-        public Jugador getJugador (Personaje personaje) {
-            if (personaje.getJugador() == 1)
-                return jugador1;
-            else
-                return jugador2;
+            setFase("DECLARACION");
+    
+            declaracion.setEjecutor(pSeleccionado());
+            declaracion.setHabilidad(habilidad);
+    
+            if (habilidad == "DEFENDER") {
+               declaracion.setPrioridad((float) 100 + pSeleccionado().getVoluntad() / 100);
+            } else {
+               declaracion.setPrioridad(pSeleccionado().getIniciativa());
+            }
+    
+            if (habilidad == "ATACAR") {
+               setFase("SELECCIONAR.OBJETIVO");
+               //iniciarModoSeleccion();
+            } else {
+               acciones.add(declaracion);
+               siguienteTurno();
+            }
         }
+
+        public void seleccionarObjetivo(Jugador jugador, Integer posicion) {
+            declaracion.setVictimas(jugador.getEquipo().get(posicion));
+            acciones.add(declaracion);
+            siguienteTurno();
+        }
+
+        public void siguienteTurno() {
     
+            turno++;
+            if (turno >= personajes.size()){
+                ejecutarAcciones();
+                establecerTurnos(jugador1, jugador2);
+                acciones.clear();
+                turno = 0;
+            }
     
+            iniciarTurno(pSeleccionado());
+        }
+
         public void ejecutarAcciones (){
     
             //Se ordenan las acciones por orden de prioridad
@@ -184,4 +179,10 @@ public class Contienda {
             }
         }
 
+    //Metodos Gestion Elementos Visuales
+        public void actualizarTvFase ()
+        {
+            TextView tvFase = context.findViewById(R.id.tvFase);
+            tvFase.setText(pSeleccionado.getNombre() + ": " + this.fase);
+        }
 }
