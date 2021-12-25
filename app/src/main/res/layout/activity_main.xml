@@ -10,7 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-155dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -95,7 +98,7 @@
                 android:layout_marginEnd="20dp"
                 android:max="100"
                 android:progress="10"
-                android:progressTint="#FFC107"/>
+                android:progressTint="#FFC107" />
 
             <ImageView
                 android:id="@+id/ivJ2P1"
@@ -109,21 +112,21 @@
             android:id="@+id/fbJ1P1H1"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:foreground="@drawable/ic_atacar"
             android:clickable="true"
+            android:foreground="@drawable/ic_atacar"
+            app:layout_constraintBottom_toTopOf="@id/llJ1P1"
             app:layout_constraintEnd_toStartOf="@+id/fbJ1P1H2"
-            app:layout_constraintStart_toStartOf="@+id/llJ1P1"
-            app:layout_constraintBottom_toTopOf="@id/llJ1P1" />
+            app:layout_constraintStart_toStartOf="@+id/llJ1P1" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fbJ1P1H2"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:foreground="@drawable/ic_defender"
             android:clickable="true"
-            app:layout_constraintStart_toEndOf="@+id/fbJ1P1H1"
+            android:foreground="@drawable/ic_defender"
+            app:layout_constraintBottom_toTopOf="@+id/llJ1P1"
             app:layout_constraintEnd_toEndOf="@+id/llJ1P1"
-            app:layout_constraintBottom_toTopOf="@+id/llJ1P1" />
+            app:layout_constraintStart_toEndOf="@+id/fbJ1P1H1" />
 
         <TextView
             android:id="@+id/tvFase"
@@ -137,6 +140,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tfJ2P1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:textColor="#B71C1C"
+            app:layout_constraintBottom_toTopOf="@+id/llJ2P1"
+            app:layout_constraintEnd_toEndOf="@+id/llJ2P1"
+            app:layout_constraintStart_toStartOf="@+id/llJ2P1" />
+
+        <TextView
+            android:id="@+id/tfJ1P1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:textColor="#B71C1C"
+            app:layout_constraintBottom_toTopOf="@+id/llJ1P1"
+            app:layout_constraintEnd_toEndOf="@+id/llJ1P1"
+            app:layout_constraintStart_toStartOf="@+id/llJ1P1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

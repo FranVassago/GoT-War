@@ -39,9 +39,10 @@ public class MainActivity extends AppCompatActivity {
                 7,
                 6,
                 2,
-                findViewById(R.id.ivJ1P1),
+                findViewById(R.id.llJ1P1),
                 findViewById(R.id.pbJ1P1Salud),
-                findViewById(R.id.pbJ1P1Energia));
+                findViewById(R.id.pbJ1P1Energia),
+                findViewById(R.id.tfJ1P1));
 
         Personaje J2P1 = new Personaje(
                 "sandor",
@@ -58,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
                 5,
                 4,
                 3,
-                findViewById(R.id.ivJ1P1),
+                findViewById(R.id.llJ2P1),
                 findViewById(R.id.pbJ2P1Salud),
-                findViewById(R.id.pbJ2P1Energia));
+                findViewById(R.id.pbJ2P1Energia),
+                findViewById(R.id.tfJ2P1));
 
         jugador1.reclutarPersonaje(J1P1);
         jugador2.reclutarPersonaje(J2P1);

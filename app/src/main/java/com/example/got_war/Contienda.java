@@ -1,9 +1,19 @@
 package com.example.got_war;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Contienda {
 
@@ -144,11 +154,12 @@ public class Contienda {
     }
 
 
-    public void ejecutarAcciones (){
+    public void ejecutarAcciones () {
 
         //Se ordenan las acciones por orden de prioridad
         Boolean reordenado = true;
         Accion accionAux = null;
+
 
         while (reordenado) {
             reordenado = false;
@@ -165,23 +176,27 @@ public class Contienda {
         }
 
         //Se ejecutan las acciones
+        long delay = 0;
+        Integer danio = 0;
+
         for (Accion accion : acciones) {
-           switch (accion.getHabilidad()) {
+            switch (accion.getHabilidad()) {
+                case "ATACAR":
+                    for (Personaje victima : accion.getVictimas()) {
+                        danio = 0;
+                        accion.getEjecutor().mostrarAnimacion("ATACAR", victima, delay);
+                        victima.recibirDanio(accion.getEjecutor().getAtaque(), "FISICO");
+                    }
+                    break;
 
-              case "ATACAR":
-                 for (Personaje victima : accion.getVictimas()) {
-                    victima.recibirDanio(accion.getEjecutor().getAtaque(), "FISICO");
-                 }
-                 break;
-
-              case "DEFENDER":
-                 accion.getEjecutor().setDefendiendo(true);
-                 break;
-           }
+                case "DEFENDER":
+                    accion.getEjecutor().setDefendiendo(true);
+                    break;
+            }
+            delay = delay + 3000;
         }
 
     }
-
 
 
 }
