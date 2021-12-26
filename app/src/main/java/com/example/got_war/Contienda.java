@@ -40,10 +40,8 @@ public class Contienda {
             this.personajes = new ArrayList<Personaje>();
         }
 
-    public String getFase () { return fase; }
-
     //Getters
-        public String getFase () { return this.fase; }
+        public String getFase() { return this.fase; }
 
         public Jugador getJugador (Personaje personaje) {
             if (personaje.getJugador() == 1)
@@ -145,7 +143,7 @@ public class Contienda {
             turno++;
             if (turno >= personajes.size()){
                 ejecutarAcciones();
-                establecerTurnos(jugador1, jugador2);
+                establecerTurnos();
                 acciones.clear();
                 turno = 0;
             }
