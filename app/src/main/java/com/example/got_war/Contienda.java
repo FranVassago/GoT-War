@@ -1,19 +1,13 @@
 package com.example.got_war;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Contienda {
 
@@ -41,28 +35,31 @@ public class Contienda {
         }
 
     //Getters
-        public String getFase() { return this.fase; }
+        public String getFase() {
+            return this.fase;
+        }
 
         public Jugador getJugador (Personaje personaje) {
             if (personaje.getJugador() == 1)
-                return jugador1;
+                return this.jugador1;
             else
-                return jugador2;
+                return this.jugador2;
         }
+
+        public Personaje getPerSel() {
+            return this.personajes.get(turno);
+        }
+
 
     //Setters
         public void setFase (String fase) { this.fase = fase; }
 
 
     //Metodos de Gestión del Combate
-        public Personaje pSeleccionado () {
-            return this.personajes.get(turno);
-        }
-
         public void iniciarRonda () {
             establecerTurnos();
-            //actualizarModificadores();
-            iniciarTurno(pSeleccionado());
+            actualizarModificadores();
+            iniciarTurno(getPerSel());
         }
 
         public void establecerTurnos() {
@@ -74,6 +71,10 @@ public class Contienda {
             for (Personaje personaje : jugador2.getEquipo()) { personajes.add(personaje); }
 
             //Se ordenan los personajes por orden de iniciativa / voluntad
+            ordenarTurnos();
+        }
+
+        public void ordenarTurnos() {
             Boolean reordenado = true;
             Personaje personajeAux = null;
 
@@ -91,20 +92,26 @@ public class Contienda {
             }
         }
 
+        public void actualizarModificadores() {
+            for (Personaje personaje : personajes) {
+                personaje.setDefendiendo(false);
+            }
+        }
+
         public void iniciarTurno (Personaje personaje) {
 
             declaracion = new Accion();
 
             if (getJugador(personaje).esIA())
             {
-                declaracion.setPrioridad(pSeleccionado().getIniciativa());
+                declaracion.setPrioridad(getPerSel().getIniciativa());
                 declaracion.setEjecutor(personaje);
                 declaracion.setHabilidad("ATACAR");
                 declaracion.setVictimas(jugador1.getEquipo().get(0));
                 acciones.add(declaracion);
                 siguienteTurno();
             } else {
-                //mostrar floatingButtons
+                mostrarHabilidades(getPerSel(),3000);
                 setFase("SELECCIONAR.ACCION");
                 actualizarTvFase();
             }
@@ -114,13 +121,13 @@ public class Contienda {
 
             setFase("DECLARACION");
 
-            declaracion.setEjecutor(pSeleccionado());
+            declaracion.setEjecutor(getPerSel());
             declaracion.setHabilidad(habilidad);
 
             if (habilidad == "DEFENDER") {
-               declaracion.setPrioridad((float) 100 + pSeleccionado().getVoluntad() / 100);
+               declaracion.setPrioridad((float) 100 + getPerSel().getVoluntad() / 100);
             } else {
-               declaracion.setPrioridad(pSeleccionado().getIniciativa());
+               declaracion.setPrioridad(getPerSel().getIniciativa());
             }
 
             if (habilidad == "ATACAR") {
@@ -139,6 +146,7 @@ public class Contienda {
         }
 
         public void siguienteTurno() {
+            //ocultarHabilidades(getPerSel());
 
             turno++;
             if (turno >= personajes.size()){
@@ -148,7 +156,7 @@ public class Contienda {
                 turno = 0;
             }
 
-            iniciarTurno(pSeleccionado());
+            iniciarTurno(getPerSel());
         }
 
         public void ejecutarAcciones (){
@@ -195,6 +203,66 @@ public class Contienda {
         public void actualizarTvFase ()
         {
             TextView tvFase = context.findViewById(R.id.tvFase);
-            tvFase.setText(pSeleccionado().getNombre() + ": " + this.fase);
+            tvFase.setText(getPerSel().getNombre() + ": " + this.fase);
         }
+
+        public void mostrarHabilidades (Personaje personaje, long delay) {
+
+            FloatingActionButton fbH1, fbH2, fbH3, fbH4, fbH5;
+
+            Animation animH1 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
+            Animation animH2 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
+            Animation animH3 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
+            Animation animH4 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
+            Animation animH5 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
+
+            fbH1 = context.findViewById(R.id.fbJ1P1H1);
+            fbH2 = context.findViewById(R.id.fbJ1P1H2);
+            fbH3 = context.findViewById(R.id.fbJ1P1H3);
+            fbH4 = context.findViewById(R.id.fbJ1P1H4);
+            fbH5 = context.findViewById(R.id.fbJ1P1H5);
+
+            animH1.setStartOffset(delay + 0);
+            animH2.setStartOffset(delay + 200);
+            animH3.setStartOffset(delay + 200);
+            animH4.setStartOffset(delay + 400);
+            animH5.setStartOffset(delay + 400);
+
+            fbH1.startAnimation(animH1);
+            fbH2.startAnimation(animH2);
+            fbH3.startAnimation(animH3);
+            fbH4.startAnimation(animH4);
+            fbH5.startAnimation(animH5);
+
+        }
+
+    public void ocultarHabilidades (Personaje personaje) {
+
+        FloatingActionButton fbH1, fbH2, fbH3, fbH4, fbH5;
+
+        Animation animH1 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
+        Animation animH2 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
+        Animation animH3 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
+        Animation animH4 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
+        Animation animH5 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
+
+        fbH1 = context.findViewById(R.id.fbJ1P1H1);
+        fbH2 = context.findViewById(R.id.fbJ1P1H2);
+        fbH3 = context.findViewById(R.id.fbJ1P1H3);
+        fbH4 = context.findViewById(R.id.fbJ1P1H4);
+        fbH5 = context.findViewById(R.id.fbJ1P1H5);
+
+        animH1.setStartOffset(0);
+        animH2.setStartOffset(200);
+        animH3.setStartOffset(200);
+        animH4.setStartOffset(400);
+        animH5.setStartOffset(400);
+
+        fbH1.startAnimation(animH1);
+        fbH2.startAnimation(animH2);
+        fbH3.startAnimation(animH3);
+        fbH4.startAnimation(animH4);
+        fbH5.startAnimation(animH5);
+
+    }
 }

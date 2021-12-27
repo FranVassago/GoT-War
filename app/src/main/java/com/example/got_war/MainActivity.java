@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View.OnClickListener actionListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (contienda.getFase() == "SELECCIONAR.ACCION") {
+            if (contienda.getFase() == "SELECCIONAR.ACCION" || contienda.getFase() == "SELECCIONAR.OBJETIVO") {
                 switch (v.getId()){
                     case R.id.fbJ1P1H1:
                         contienda.declararAccion("ATACAR");

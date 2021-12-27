@@ -10,30 +10,136 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-155dp">
+        android:layout_height="match_parent">
 
+        <!-- ****************** -->
+        <!-- Indicador de Fases -->
+        <!-- ****************** -->
+        <TextView
+            android:id="@+id/tvFase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="FASE"
+            android:textColor="#9C2626"
+            android:textSize="30dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!-- *********** -->
+        <!-- Guide Lines -->
+        <!-- *********** -->
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
+            android:id="@+id/guidelineCenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="365dp" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHP1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.90"/>
+
+
+        <!-- ********************************************** -->
+        <!-- Bloque de Vistas del Personaje 1 del Jugador 1 -->
+        <!-- ********************************************** -->
+
+        <!-- Layout para textos flotantes -->
+        <LinearLayout
+            android:id="@+id/llTextoFlotanteJ1P1"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            app:layout_constraintBottom_toTopOf="@+id/llJ1P1"
+            app:layout_constraintEnd_toEndOf="@+id/llJ1P1"
+            app:layout_constraintStart_toStartOf="@+id/llJ1P1">
+
+            <TextView
+                android:id="@+id/tfJ1P1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="15"
+                android:textColor="#B71C1C"
+                app:layout_constraintBottom_toTopOf="@+id/llJ2P1"
+                app:layout_constraintEnd_toEndOf="@+id/llJ2P1"
+                app:layout_constraintStart_toStartOf="@+id/llJ2P1" />
+        </LinearLayout>
+
+        <!-- Floating Buttons de habilidades -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbJ1P1H1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="@drawable/ic_atacar"
+            app:layout_constraintBottom_toTopOf="@+id/llJ1P1"
+            app:layout_constraintStart_toStartOf="@+id/llJ1P1"
+            app:layout_constraintEnd_toEndOf="@+id/llJ1P1"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbJ1P1H2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="@drawable/ic_defender"
+            app:layout_constraintTop_toTopOf="@id/fbJ1P1H1"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@id/fbJ1P1H1"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbJ1P1H3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="@drawable/ic_templanza"
+            app:layout_constraintTop_toTopOf="@+id/fbJ1P1H1"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/fbJ1P1H1"
+            android:layout_marginStart="8dp"/>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbJ1P1H4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="24dp"
+            android:alpha="0.5"
+            android:clickable="true"
+            android:foreground="@drawable/ic_bloqueada"
+            app:layout_constraintEnd_toEndOf="@+id/fbJ1P1H2"
+            app:layout_constraintTop_toBottomOf="@+id/fbJ1P1H2" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbJ1P1H5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:alpha="0.5"
+            android:clickable="true"
+            android:foreground="@drawable/ic_bloqueada"
+            app:layout_constraintStart_toStartOf="@+id/fbJ1P1H3"
+            app:layout_constraintTop_toBottomOf="@+id/fbJ1P1H3" />
+
+        <!-- Personaje y barras de vida y energía -->
         <LinearLayout
             android:id="@+id/llJ1P1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-
-            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineHP1"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.85">
+            app:layout_constraintHorizontal_bias="0.85">
 
             <ProgressBar
                 android:id="@+id/pbJ1P1Salud"
@@ -65,18 +171,43 @@
                 app:srcCompat="@drawable/briene" />
         </LinearLayout>
 
+        <!-- ********************************************** -->
+        <!-- Bloque de Vistas del Personaje 2 del Jugador 2 -->
+        <!-- ********************************************** -->
+
+        <LinearLayout
+            android:id="@+id/llTextoFlotanteJ2P1"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/llJ2P1"
+            app:layout_constraintEnd_toEndOf="@+id/llJ2P1"
+            app:layout_constraintStart_toStartOf="@+id/llJ2P1">
+
+            <TextView
+                android:id="@+id/tfJ2P1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="15"
+                android:textColor="#B71C1C"
+                app:layout_constraintBottom_toTopOf="@+id/llJ2P1"
+                app:layout_constraintEnd_toEndOf="@+id/llJ2P1"
+                app:layout_constraintStart_toStartOf="@+id/llJ2P1" />
+        </LinearLayout>
+
+
+        <!-- Personaje y barras de vida y energía -->
         <LinearLayout
             android:id="@+id/llJ2P1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineHP1"
+            app:layout_constraintStart_toStartOf="@+id/guidelineCenter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.15"
-
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.85">
+            app:layout_constraintHorizontal_bias="0.15">
 
             <ProgressBar
                 android:id="@+id/pbJ2P1Salud"
@@ -108,58 +239,6 @@
                 app:srcCompat="@drawable/sandor" />
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fbJ1P1H1"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:clickable="true"
-            android:foreground="@drawable/ic_atacar"
-            app:layout_constraintBottom_toTopOf="@id/llJ1P1"
-            app:layout_constraintEnd_toStartOf="@+id/fbJ1P1H2"
-            app:layout_constraintStart_toStartOf="@+id/llJ1P1" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fbJ1P1H2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:clickable="true"
-            android:foreground="@drawable/ic_defender"
-            app:layout_constraintBottom_toTopOf="@+id/llJ1P1"
-            app:layout_constraintEnd_toEndOf="@+id/llJ1P1"
-            app:layout_constraintStart_toEndOf="@+id/fbJ1P1H1" />
-
-        <TextView
-            android:id="@+id/tvFase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="FASE"
-            android:textColor="#9C2626"
-            android:textSize="30dp"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tfJ2P1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="15"
-            android:textColor="#B71C1C"
-            app:layout_constraintBottom_toTopOf="@+id/llJ2P1"
-            app:layout_constraintEnd_toEndOf="@+id/llJ2P1"
-            app:layout_constraintStart_toStartOf="@+id/llJ2P1" />
-
-        <TextView
-            android:id="@+id/tfJ1P1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="15"
-            android:textColor="#B71C1C"
-            app:layout_constraintBottom_toTopOf="@+id/llJ1P1"
-            app:layout_constraintEnd_toEndOf="@+id/llJ1P1"
-            app:layout_constraintStart_toStartOf="@+id/llJ1P1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
