@@ -222,11 +222,11 @@ public class Contienda {
             fbH4 = context.findViewById(R.id.fbJ1P1H4);
             fbH5 = context.findViewById(R.id.fbJ1P1H5);
 
-            animH1.setStartOffset(delay + 0);
-            animH2.setStartOffset(delay + 200);
-            animH3.setStartOffset(delay + 200);
-            animH4.setStartOffset(delay + 400);
-            animH5.setStartOffset(delay + 400);
+            animH1.setStartTime(delay + 0);
+            animH2.setStartTime(delay + 200);
+            animH3.setStartTime(delay + 200);
+            animH4.setStartTime(delay + 400);
+            animH5.setStartTime(delay + 400);
 
             fbH1.startAnimation(animH1);
             fbH2.startAnimation(animH2);
@@ -252,11 +252,11 @@ public class Contienda {
         fbH4 = context.findViewById(R.id.fbJ1P1H4);
         fbH5 = context.findViewById(R.id.fbJ1P1H5);
 
-        animH1.setStartOffset(0);
-        animH2.setStartOffset(200);
-        animH3.setStartOffset(200);
-        animH4.setStartOffset(400);
-        animH5.setStartOffset(400);
+        animH1.setStartTime(0);
+        animH2.setStartTime(200);
+        animH3.setStartTime(200);
+        animH4.setStartTime(400);
+        animH5.setStartTime(400);
 
         fbH1.startAnimation(animH1);
         fbH2.startAnimation(animH2);
