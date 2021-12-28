@@ -1,6 +1,8 @@
 package com.example.got_war;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -56,10 +58,13 @@ public class Contienda {
 
 
     //Metodos de Gestión del Combate
-        public void iniciarRonda () {
+        public void iniciarRonda (long delay) {
+            this.turno = 0;
+            acciones.clear();
+
             establecerTurnos();
             actualizarModificadores();
-            iniciarTurno(getPerSel());
+            iniciarTurno(getPerSel(), delay);
         }
 
         public void establecerTurnos() {
@@ -98,7 +103,7 @@ public class Contienda {
             }
         }
 
-        public void iniciarTurno (Personaje personaje) {
+        public void iniciarTurno (Personaje personaje, long delay) {
 
             declaracion = new Accion();
 
@@ -111,7 +116,10 @@ public class Contienda {
                 acciones.add(declaracion);
                 siguienteTurno();
             } else {
-                mostrarHabilidades(getPerSel(),3000);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() { mostrarHabilidades(getPerSel(),0); }
+                }, delay);
                 setFase("SELECCIONAR.ACCION");
                 actualizarTvFase();
             }
@@ -132,6 +140,7 @@ public class Contienda {
 
             if (habilidad == "ATACAR") {
                setFase("SELECCIONAR.OBJETIVO");
+               actualizarTvFase();
                //iniciarModoSeleccion();
             } else {
                acciones.add(declaracion);
@@ -146,24 +155,25 @@ public class Contienda {
         }
 
         public void siguienteTurno() {
-            //ocultarHabilidades(getPerSel());
+            ocultarHabilidades(getPerSel());
 
             turno++;
             if (turno >= personajes.size()){
-                ejecutarAcciones();
-                establecerTurnos();
-                acciones.clear();
-                turno = 0;
+                long delay;
+                delay = ejecutarAcciones();
+                iniciarRonda(delay);
+            } else {
+                iniciarTurno(getPerSel(),0);
             }
 
-            iniciarTurno(getPerSel());
         }
 
-        public void ejecutarAcciones (){
+        public long ejecutarAcciones (){
 
             //Se ordenan las acciones por orden de prioridad
             Boolean reordenado = true;
             Accion accionAux = null;
+            long delay = 1000;
 
             while (reordenado) {
                 reordenado = false;
@@ -180,14 +190,13 @@ public class Contienda {
             }
 
             //Se ejecutan las acciones
-            long delay = 0;
-
             for (Accion accion : acciones) {
                switch (accion.getHabilidad()) {
                   case "ATACAR":
                      for (Personaje victima : accion.getVictimas()) {
                         accion.getEjecutor().mostrarAnimacion("ATACAR", victima, delay);
                         victima.recibirDanio(accion.getEjecutor().getAtaque(), "FISICO");
+                        delay = delay + 2000;
                      }
                      break;
 
@@ -195,8 +204,10 @@ public class Contienda {
                      accion.getEjecutor().setDefendiendo(true);
                      break;
                }
-               delay = delay + 3000;
+
             }
+
+            return delay;
         }
 
     //Metodos Gestion Elementos Visuales
@@ -210,11 +221,11 @@ public class Contienda {
 
             FloatingActionButton fbH1, fbH2, fbH3, fbH4, fbH5;
 
-            Animation animH1 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
-            Animation animH2 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
-            Animation animH3 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
-            Animation animH4 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
-            Animation animH5 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidad);
+            Animation animH1 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidadh1);
+            Animation animH2 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidadh2);
+            Animation animH3 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidadh3);
+            Animation animH4 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidadh4);
+            Animation animH5 = AnimationUtils.loadAnimation(context, R.anim.mostrarhabilidadh5);
 
             fbH1 = context.findViewById(R.id.fbJ1P1H1);
             fbH2 = context.findViewById(R.id.fbJ1P1H2);
@@ -222,11 +233,11 @@ public class Contienda {
             fbH4 = context.findViewById(R.id.fbJ1P1H4);
             fbH5 = context.findViewById(R.id.fbJ1P1H5);
 
-            animH1.setStartTime(delay + 0);
-            animH2.setStartTime(delay + 200);
-            animH3.setStartTime(delay + 200);
-            animH4.setStartTime(delay + 400);
-            animH5.setStartTime(delay + 400);
+            animH4.setStartOffset(delay + 0);
+            animH2.setStartOffset(delay + 125);
+            animH1.setStartOffset(delay + 250);
+            animH3.setStartOffset(delay + 350);
+            animH5.setStartOffset(delay + 500);
 
             fbH1.startAnimation(animH1);
             fbH2.startAnimation(animH2);
@@ -234,17 +245,30 @@ public class Contienda {
             fbH4.startAnimation(animH4);
             fbH5.startAnimation(animH5);
 
+            fbH1.setVisibility(View.VISIBLE);
+            fbH2.setVisibility(View.VISIBLE);
+            fbH3.setVisibility(View.VISIBLE);
+            fbH4.setVisibility(View.VISIBLE);
+            fbH5.setVisibility(View.VISIBLE);
+
+            fbH1.setClickable(true);
+            fbH2.setClickable(true);
+            fbH3.setClickable(true);
+            fbH4.setClickable(true);
+            fbH5.setClickable(true);
+
+
         }
 
     public void ocultarHabilidades (Personaje personaje) {
 
         FloatingActionButton fbH1, fbH2, fbH3, fbH4, fbH5;
 
-        Animation animH1 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
-        Animation animH2 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
-        Animation animH3 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
-        Animation animH4 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
-        Animation animH5 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidad);
+        Animation animH1 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidadh1);
+        Animation animH2 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidadh2);
+        Animation animH3 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidadh3);
+        Animation animH4 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidadh4);
+        Animation animH5 = AnimationUtils.loadAnimation(context, R.anim.ocultarhabilidadh5);
 
         fbH1 = context.findViewById(R.id.fbJ1P1H1);
         fbH2 = context.findViewById(R.id.fbJ1P1H2);
@@ -252,17 +276,29 @@ public class Contienda {
         fbH4 = context.findViewById(R.id.fbJ1P1H4);
         fbH5 = context.findViewById(R.id.fbJ1P1H5);
 
-        animH1.setStartTime(0);
-        animH2.setStartTime(200);
-        animH3.setStartTime(200);
-        animH4.setStartTime(400);
-        animH5.setStartTime(400);
+        fbH1.setClickable(false);
+        fbH2.setClickable(false);
+        fbH3.setClickable(false);
+        fbH4.setClickable(false);
+        fbH5.setClickable(false);
+
+        animH4.setStartOffset(500);
+        animH2.setStartOffset(325);
+        animH1.setStartOffset(250);
+        animH3.setStartOffset(125);
+        animH5.setStartOffset(0);
 
         fbH1.startAnimation(animH1);
         fbH2.startAnimation(animH2);
         fbH3.startAnimation(animH3);
         fbH4.startAnimation(animH4);
         fbH5.startAnimation(animH5);
+
+        fbH1.setVisibility(View.INVISIBLE);
+        fbH2.setVisibility(View.INVISIBLE);
+        fbH3.setVisibility(View.INVISIBLE);
+        fbH4.setVisibility(View.INVISIBLE);
+        fbH5.setVisibility(View.INVISIBLE);
 
     }
 }

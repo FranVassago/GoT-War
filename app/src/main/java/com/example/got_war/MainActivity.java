@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         contienda = new Contienda(this,jugador1, jugador2, "INICIO");
 
-        contienda.iniciarRonda();
+        contienda.iniciarRonda(0);
 
         FloatingActionButton fbJ1P1H1;
         fbJ1P1H1 = findViewById(R.id.fbJ1P1H1);
