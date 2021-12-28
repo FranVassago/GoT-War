@@ -5,42 +5,59 @@ import java.util.ArrayList;
 public class Accion {
     private Float prioridad;
     private Personaje ejecutor;
-    private String habilidad;
+    private Habilidad habilidad;
     private ArrayList<Personaje> victimas;
+    private int delayAccion;
 
+    //Constructor
     public Accion() {
         this.victimas = new ArrayList<Personaje>();
     }
 
-    public float getPrioridad() {
+    //Getters
+        public float getPrioridad() {
         return this.prioridad;
     }
-
-    public void setPrioridad(float prioridad) {
-        this.prioridad = prioridad;
-    }
-
-    public Personaje getEjecutor() {
-        return this.ejecutor;
-    }
-
-    public void setEjecutor(Personaje ejecutor) {
-        this.ejecutor = ejecutor;
-    }
-
-    public String getHabilidad() {
+        public Habilidad getHabilidad() {
         return this.habilidad;
     }
-
-    public void setHabilidad(String habilidad) {
-        this.habilidad = habilidad;
-    }
-
-    public ArrayList<Personaje> getVictimas() {
+        public ArrayList<Personaje> getVictimas() {
         return this.victimas;
     }
+        public int DelayAccion() { return this.delayAccion; }
 
-    public void setVictimas(Personaje victima) {
+    //Setters
+        public void setPrioridad(float prioridad) {
+        this.prioridad = prioridad;
+    }
+        public void setEjecutor(Personaje ejecutor) {
+        this.ejecutor = ejecutor;
+    }
+        public void setHabilidad(Habilidad habilidad) {
+        this.habilidad = habilidad;
+    }
+        public void setVictimas(Personaje victima) {
         this.victimas.add(victima);
+    }
+
+
+    //Métodos con la mecánica de las acciones
+    public long ejecutar(long delayTurnos) {
+        if (habilidad.modificaEnergia()) {
+            ejecutor.modificaEnergiaRestante(habilidad.getEnergia());
+        }
+
+        if (habilidad.causaDanio()) {
+            for (Personaje victima : victimas) {
+                ejecutor.mostrarAnimacion("ATACAR", victima, delayAccion);
+                victima.recibirDanio(ejecutor.getAtaque(), habilidad.getTipoDanio());
+            }
+        }
+
+        if (habilidad.activaDefensa()) {
+            ejecutor.setDefendiendo(true);
+        }
+
+        return delayTurnos + habilidad.getDelay();
     }
 }

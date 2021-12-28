@@ -1,67 +1,74 @@
 package com.example.got_war;
 
 public class Habilidad {
-    private Integer prioridad;
     private String nombre;
-    private String tipoObjetivo; // INDIVIDUAL - TODOS_LOS_ENEMIGOS - TODOS_LOS_ALIADOS
-    private Integer danio;
+    private String tipoObjetivo; // PERSONAL - ENEMIGO - TODOS_LOS_ENEMIGOS - ALIADO - TODOS_LOS_ALIADOS
+    //Energia
+    private Boolean consumeEnergia;
+    private Boolean generaEnergia;
+    private int energia;
+    //Ataque
+    private Boolean causaDanio;
     private String tipoDanio; // FISICO - MAGICO
-    private Boolean activarDefensa;
+    //Defensa
+    private Boolean activaDefensa;
+    //Modificadores
+    private Modificador modificador;
+    //Visual
+    private long delay;
 
-    public Habilidad(Integer prioridad, String nombre, String tipoObjetivo, Integer danio, String tipoDanio, Boolean activarDefensa) {
-        this.prioridad = prioridad;
+    public Habilidad(
+            String nombre,
+            //Energía
+            Boolean modificaEnergia,
+            int energia,
+            //Ataque
+            Boolean causaDanio,
+            String tipoObjetivo,
+            String tipoDanio,
+            //Defensa
+            Boolean activaDefensa,
+            //Modificadores
+            Modificador modificador,
+            //Visual
+            long delay) {
         this.nombre = nombre;
+        //Energia
+        this.consumeEnergia = modificaEnergia;
+        this.energia = energia;
+        //Ataque
+        this.causaDanio = causaDanio;
         this.tipoObjetivo = tipoObjetivo;
-        this.danio = danio;
         this.tipoDanio = tipoDanio;
-        this.activarDefensa = activarDefensa;
+        //Defensa
+        this.activaDefensa = activaDefensa;
+        //Modificadores
+        this.modificador = modificador;
+        //Visual
+        this.delay = delay;
     }
 
-    public Integer getPrioridad() {
-        return prioridad;
-    }
-
-    public void setPrioridad(Integer prioridad) {
-        this.prioridad = prioridad;
-    }
-
-    public String getNombre() {
+    //Getters
+        public String getNombre() {
         return nombre;
     }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+        public int getEnergia() {
+        return energia;
     }
-
-    public String getTipoObjetivo() {
+        public String getTipoObjetivo() {
         return tipoObjetivo;
     }
-
-    public void setObjetivo(String tipoObjetivo) {
-        this.tipoObjetivo = tipoObjetivo;
-    }
-
-    public Integer getDanio() {
-        return danio;
-    }
-
-    public void setDanio(Integer danio) {
-        this.danio = danio;
-    }
-
-    public String getTipoDanio() {
+        public String getTipoDanio() {
         return tipoDanio;
     }
+        public Modificador getModificador() { return modificador; }
+        public long getDelay() { return delay; }
 
-    public void setTipoDanio(String tipoDanio) {
-        this.tipoDanio = tipoDanio;
-    }
+    //Booleans
+        public Boolean causaDanio() { return this.causaDanio; }
+        public Boolean modificaEnergia() { return this.modificaEnergia(); }
+        public Boolean activaDefensa() {
+            return activaDefensa;
+        }
 
-    public Boolean getActivarDefensa() {
-        return activarDefensa;
-    }
-
-    public void setActivarDefensa(Boolean activarDefensa) {
-        this.activarDefensa = activarDefensa;
-    }
 }

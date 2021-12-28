@@ -67,41 +67,45 @@ public class MainActivity extends AppCompatActivity {
         jugador1.reclutarPersonaje(J1P1);
         jugador2.reclutarPersonaje(J2P1);
 
-        contienda = new Contienda(this,jugador1, jugador2, "INICIO");
-
-        contienda.iniciarRonda(0);
+        Habilidad J1P1H1 = new Habilidad("ATACAR",true, 10, true, "ENEMIGO", "FISICO", false, null, 2000);
+        Habilidad J1P1H2 = new Habilidad("DEFENDER",true, 15, false, "PERSONAL", null, true, null, 1000);
+        Habilidad J1P1H3 = new Habilidad("TEMPLANZA",true, -10, false, "PERSONAL", null, true, null, 1000);
 
         FloatingActionButton fbJ1P1H1;
         fbJ1P1H1 = findViewById(R.id.fbJ1P1H1);
-        fbJ1P1H1.setOnClickListener(actionListener);
+        fbJ1P1H1.setTag(J1P1H1);
+        fbJ1P1H1.setOnClickListener(habilidadListener);
 
         FloatingActionButton fbJ1P1H2;
         fbJ1P1H2 = findViewById(R.id.fbJ1P1H2);
-        fbJ1P1H2.setOnClickListener(actionListener);
+        fbJ1P1H2.setTag(J1P1H2);
+        fbJ1P1H2.setOnClickListener(habilidadListener);
+
+        FloatingActionButton fbJ1P1H3;
+        fbJ1P1H3 = findViewById(R.id.fbJ1P1H3);
+        fbJ1P1H3.setTag(J1P1H3);
+        fbJ1P1H3.setOnClickListener(habilidadListener);
 
         ImageView ivJ1P2;
         ivJ1P2 = findViewById(R.id.ivJ2P1);
-        ivJ1P2.setOnClickListener(tarjetListener);
+        ivJ1P2.setOnClickListener(objetivoListener);
+
+        contienda = new Contienda(this,jugador1, jugador2);
+
+        contienda.iniciarRonda(0);
 
     }
 
 
-    private View.OnClickListener actionListener = new View.OnClickListener() {
+    private View.OnClickListener habilidadListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (contienda.getFase() == "SELECCIONAR.ACCION" || contienda.getFase() == "SELECCIONAR.OBJETIVO") {
-                switch (v.getId()){
-                    case R.id.fbJ1P1H1:
-                        contienda.declararAccion("ATACAR");
-                        break;
-                    case R.id.fbJ1P1H2:
-                        contienda.declararAccion("DEFENDER");
-                        break;
-                }
-            }
+            if (contienda.getFase() == "SELECCIONAR.ACCION" || contienda.getFase() == "SELECCIONAR.OBJETIVO")
+                contienda.declararAccion((Habilidad) v.getTag());
+
         }
     };
 
-    private View.OnClickListener tarjetListener = new View.OnClickListener() {
+    private View.OnClickListener objetivoListener = new View.OnClickListener() {
         public void onClick(View v) {
             if (contienda.getFase() == "SELECCIONAR.OBJETIVO") {
                 contienda.seleccionarObjetivo(jugador2, 0);

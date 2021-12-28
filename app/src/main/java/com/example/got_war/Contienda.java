@@ -1,6 +1,7 @@
 package com.example.got_war;
 
 import android.app.Activity;
+import android.app.VoiceInteractor;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,12 +26,10 @@ public class Contienda {
 
 
     //Constructor
-        public Contienda(Activity context, Jugador jugador1, Jugador jugador2, String fase) {
+        public Contienda(Activity context, Jugador jugador1, Jugador jugador2) {
             this.context = context;
             this.jugador1 = jugador1;
             this.jugador2 = jugador2;
-            this.fase = fase;
-            this.turno = 0;
 
             this.acciones = new ArrayList<Accion>();
             this.personajes = new ArrayList<Personaje>();
@@ -109,9 +108,10 @@ public class Contienda {
 
             if (getJugador(personaje).esIA())
             {
+                Habilidad J2P1H1 = new Habilidad("ATACAR",true, 10, true, "ENEMIGO", "FISICO", false, null, 2000);
                 declaracion.setPrioridad(getPerSel().getIniciativa());
                 declaracion.setEjecutor(personaje);
-                declaracion.setHabilidad("ATACAR");
+                declaracion.setHabilidad(J2P1H1);
                 declaracion.setVictimas(jugador1.getEquipo().get(0));
                 acciones.add(declaracion);
                 siguienteTurno();
@@ -125,26 +125,35 @@ public class Contienda {
             }
         }
 
-        public void declararAccion (String habilidad) {
+        public void declararAccion (Habilidad habilidad) {
 
             setFase("DECLARACION");
 
             declaracion.setEjecutor(getPerSel());
             declaracion.setHabilidad(habilidad);
 
-            if (habilidad == "DEFENDER") {
+            if (habilidad.getNombre() == "DEFENDER") {
                declaracion.setPrioridad((float) 100 + getPerSel().getVoluntad() / 100);
             } else {
                declaracion.setPrioridad(getPerSel().getIniciativa());
             }
 
-            if (habilidad == "ATACAR") {
-               setFase("SELECCIONAR.OBJETIVO");
-               actualizarTvFase();
-               //iniciarModoSeleccion();
-            } else {
-               acciones.add(declaracion);
-               siguienteTurno();
+            switch (habilidad.getTipoObjetivo()) {
+                case "PERSONAL":
+                    declaracion.setVictimas(getPerSel());
+                    acciones.add(declaracion);
+                    siguienteTurno();
+                    break;
+                case "ENEMIGO":
+                    setFase("SELECCIONAR.OBJETIVO.ENEMIGO");
+                    actualizarTvFase();
+                    //iniciarModoSeleccion();
+                    break;
+                case "ALIADO":
+                    setFase("SELECCIONAR.OBJETIVO.ALIADO");
+                    actualizarTvFase();
+                    //iniciarModoSeleccion();
+                    break;
             }
         }
 
@@ -169,46 +178,35 @@ public class Contienda {
         }
 
         public long ejecutarAcciones (){
-
-            //Se ordenan las acciones por orden de prioridad
-            Boolean reordenado = true;
-            Accion accionAux = null;
             long delay = 1000;
 
-            while (reordenado) {
-                reordenado = false;
-                for (int i = 0; i < acciones.size(); i++) {
-                    if (i > 0) {
-                        if (acciones.get(i - 1).getPrioridad() > acciones.get(i).getPrioridad()) {
-                            accionAux = acciones.get(i - 1);
-                            acciones.set(i - 1, acciones.get(i));
-                            acciones.set(i, accionAux);
-                            reordenado = true;
-                        }
-                    }
-                }
-            }
+            //Se ordenan las acciones por orden de prioridad
+            ordenarAcciones();
 
             //Se ejecutan las acciones
-            for (Accion accion : acciones) {
-               switch (accion.getHabilidad()) {
-                  case "ATACAR":
-                     for (Personaje victima : accion.getVictimas()) {
-                        accion.getEjecutor().mostrarAnimacion("ATACAR", victima, delay);
-                        victima.recibirDanio(accion.getEjecutor().getAtaque(), "FISICO");
-                        delay = delay + 2000;
-                     }
-                     break;
-
-                  case "DEFENDER":
-                     accion.getEjecutor().setDefendiendo(true);
-                     break;
-               }
-
-            }
+            for (Accion accion : acciones) { delay = accion.ejecutar(delay); }
 
             return delay;
         }
+
+    public void ordenarAcciones() {
+        Boolean reordenado = true;
+        Accion accionAux = null;
+
+        while (reordenado) {
+            reordenado = false;
+            for (int i = 0; i < acciones.size(); i++) {
+                if (i > 0) {
+                    if (acciones.get(i - 1).getPrioridad() > acciones.get(i).getPrioridad()) {
+                        accionAux = acciones.get(i - 1);
+                        acciones.set(i - 1, acciones.get(i));
+                        acciones.set(i, accionAux);
+                        reordenado = true;
+                    }
+                }
+            }
+        }
+    }
 
     //Metodos Gestion Elementos Visuales
         public void actualizarTvFase ()

@@ -104,34 +104,38 @@ public class Personaje {
         actualizarBarraEnergia();
     }
 
-    public String getNombre() { return this.nombre; }
-
-    public Integer getJugador() {
-        return this.jugador;
-    }
-
-    public Float getIniciativa () {
-        return (float) this.iniciativa + this.modIniciativa + ((this.voluntad + this.modVoluntad) / 100);
-    }
-
-    public Integer getVoluntad() {
-        return this.voluntad + this.modVoluntad;
-    }
-
-    public Integer getAtaque() {
-        return this.ataque + this.modAtaque;
-    }
-
-    public Integer getDefensa() {
-        return this.defensa + this.modDefensa;
-    }
-
-    public void setDefendiendo(Boolean defendiendo) {
-        this.estaDefendiendo = defendiendo;
-    }
-
-    public LinearLayout getImagen () {
+    //Getters
+        public String getNombre() { return this.nombre; }
+        public Integer getJugador() {
+            return this.jugador;
+        }
+        public int getEnergiaRestante() { return this.energiaRestante; }
+        public int getSaludRestante() { return this.saludRestante; }
+        public Float getIniciativa () { return (float) this.iniciativa + this.modIniciativa + ((this.voluntad + this.modVoluntad) / 100); }
+        public Integer getVoluntad() {
+            return this.voluntad + this.modVoluntad;
+        }
+        public Integer getAtaque() {
+            return this.ataque + this.modAtaque;
+        }
+        public Integer getDefensa() {
+            return this.defensa + this.modDefensa;
+        }
+        public void setDefendiendo(Boolean defendiendo) {
+            this.estaDefendiendo = defendiendo;
+        }
+        public LinearLayout getImagen () {
         return this.imagen;
+    }
+
+    //Setters
+
+
+    //Métodos específicos de la mecánica del juego
+    public void modificaEnergiaRestante(Integer energia) {
+        this.energiaRestante = this.energiaRestante + energia;
+        if (this.energiaRestante > this.energiaTotal)
+            this.energiaRestante = this.energiaTotal;
     }
 
     public void recibirDanio (Integer danio, String tipoDanio) {
