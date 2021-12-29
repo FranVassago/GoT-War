@@ -92,15 +92,16 @@ public class MainActivity extends AppCompatActivity {
 
         contienda = new Contienda(this,jugador1, jugador2);
 
-        contienda.iniciarRonda(0);
+        contienda.iniciarRonda();
 
     }
 
 
     private View.OnClickListener habilidadListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (contienda.getFase() == "SELECCIONAR.ACCION" || contienda.getFase() == "SELECCIONAR.OBJETIVO")
+            if (contienda.getFase() == "SELECCIONAR.ACCION" || contienda.getFase() == "SELECCIONAR.OBJETIVO") {
                 contienda.declararAccion((Habilidad) v.getTag());
+            }
 
         }
     };

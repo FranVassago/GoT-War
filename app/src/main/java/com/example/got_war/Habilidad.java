@@ -4,8 +4,7 @@ public class Habilidad {
     private String nombre;
     private String tipoObjetivo; // PERSONAL - ENEMIGO - TODOS_LOS_ENEMIGOS - ALIADO - TODOS_LOS_ALIADOS
     //Energia
-    private Boolean consumeEnergia;
-    private Boolean generaEnergia;
+    private Boolean modificaEnergia;
     private int energia;
     //Ataque
     private Boolean causaDanio;
@@ -34,7 +33,7 @@ public class Habilidad {
             long delay) {
         this.nombre = nombre;
         //Energia
-        this.consumeEnergia = modificaEnergia;
+        this.modificaEnergia = modificaEnergia;
         this.energia = energia;
         //Ataque
         this.causaDanio = causaDanio;
@@ -66,7 +65,7 @@ public class Habilidad {
 
     //Booleans
         public Boolean causaDanio() { return this.causaDanio; }
-        public Boolean modificaEnergia() { return this.modificaEnergia(); }
+        public Boolean modificaEnergia() { return this.modificaEnergia; }
         public Boolean activaDefensa() {
             return activaDefensa;
         }

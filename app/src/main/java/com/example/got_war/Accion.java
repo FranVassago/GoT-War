@@ -24,7 +24,7 @@ public class Accion {
         public ArrayList<Personaje> getVictimas() {
         return this.victimas;
     }
-        public int DelayAccion() { return this.delayAccion; }
+        public int getDelayAccion() { return this.delayAccion; }
 
     //Setters
         public void setPrioridad(float prioridad) {
@@ -42,7 +42,9 @@ public class Accion {
 
 
     //Métodos con la mecánica de las acciones
-    public long ejecutar(long delayTurnos) {
+    public long ejecutar() {
+        long delay = 0;
+
         if (habilidad.modificaEnergia()) {
             ejecutor.modificaEnergiaRestante(habilidad.getEnergia());
         }
@@ -58,6 +60,8 @@ public class Accion {
             ejecutor.setDefendiendo(true);
         }
 
-        return delayTurnos + habilidad.getDelay();
+        delay = habilidad.getDelay();
+
+        return delay;
     }
 }

@@ -12,7 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class Contienda {
+public class Contienda extends Thread{
 
     private Activity context;
 
@@ -23,6 +23,7 @@ public class Contienda {
     private Accion declaracion;
     private ArrayList<Accion> acciones;
     private ArrayList<Personaje> personajes;
+    private ReproductorAcciones reproductorAcciones;
 
 
     //Constructor
@@ -33,6 +34,8 @@ public class Contienda {
 
             this.acciones = new ArrayList<Accion>();
             this.personajes = new ArrayList<Personaje>();
+
+            this.reproductorAcciones = new ReproductorAcciones(context);
         }
 
     //Getters
@@ -57,13 +60,13 @@ public class Contienda {
 
 
     //Metodos de Gestión del Combate
-        public void iniciarRonda (long delay) {
+        public void iniciarRonda ()  {
             this.turno = 0;
             acciones.clear();
 
             establecerTurnos();
             actualizarModificadores();
-            iniciarTurno(getPerSel(), delay);
+            iniciarTurno(getPerSel());
         }
 
         public void establecerTurnos() {
@@ -102,7 +105,7 @@ public class Contienda {
             }
         }
 
-        public void iniciarTurno (Personaje personaje, long delay) {
+        public void iniciarTurno (Personaje personaje)  {
 
             declaracion = new Accion();
 
@@ -116,16 +119,13 @@ public class Contienda {
                 acciones.add(declaracion);
                 siguienteTurno();
             } else {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() { mostrarHabilidades(getPerSel(),0); }
-                }, delay);
+                mostrarHabilidades(getPerSel(),0);
                 setFase("SELECCIONAR.ACCION");
                 actualizarTvFase();
             }
         }
 
-        public void declararAccion (Habilidad habilidad) {
+        public void declararAccion (Habilidad habilidad)  {
 
             setFase("DECLARACION");
 
@@ -157,56 +157,44 @@ public class Contienda {
             }
         }
 
-        public void seleccionarObjetivo(Jugador jugador, Integer posicion) {
+        public void seleccionarObjetivo(Jugador jugador, Integer posicion)  {
             declaracion.setVictimas(jugador.getEquipo().get(posicion));
             acciones.add(declaracion);
             siguienteTurno();
         }
 
-        public void siguienteTurno() {
+        public void siguienteTurno()  {
             ocultarHabilidades(getPerSel());
 
             turno++;
             if (turno >= personajes.size()){
-                long delay;
-                delay = ejecutarAcciones();
-                iniciarRonda(delay);
+                reproducirAcciones();
+                iniciarRonda();
             } else {
-                iniciarTurno(getPerSel(),0);
+                iniciarTurno(getPerSel());
+            }
+
+        }
+        
+        public void reproducirAcciones () {
+
+            reproductorAcciones.setAcciones(acciones);
+
+            Thread threadAcciones = new Thread(reproductorAcciones);
+
+            try {
+                threadAcciones.start();
+                threadAcciones.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
         }
 
-        public long ejecutarAcciones (){
-            long delay = 1000;
+        @Override
+        public void run(){
 
-            //Se ordenan las acciones por orden de prioridad
-            ordenarAcciones();
-
-            //Se ejecutan las acciones
-            for (Accion accion : acciones) { delay = accion.ejecutar(delay); }
-
-            return delay;
         }
-
-    public void ordenarAcciones() {
-        Boolean reordenado = true;
-        Accion accionAux = null;
-
-        while (reordenado) {
-            reordenado = false;
-            for (int i = 0; i < acciones.size(); i++) {
-                if (i > 0) {
-                    if (acciones.get(i - 1).getPrioridad() > acciones.get(i).getPrioridad()) {
-                        accionAux = acciones.get(i - 1);
-                        acciones.set(i - 1, acciones.get(i));
-                        acciones.set(i, accionAux);
-                        reordenado = true;
-                    }
-                }
-            }
-        }
-    }
 
     //Metodos Gestion Elementos Visuales
         public void actualizarTvFase ()
