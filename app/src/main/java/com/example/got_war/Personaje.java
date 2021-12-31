@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Path;
 import android.text.Layout;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,10 +40,9 @@ public class Personaje {
     private Integer modAgilidad;
     private Integer voluntad;
     private Integer modVoluntad;
-    private LinearLayout imagen;
+    private ImageView imagen;
     private ProgressBar barraSalud;
     private ProgressBar barraEnergia;
-    private TextView textoFlotante;
 
     public Personaje(
             String id,
@@ -59,10 +59,9 @@ public class Personaje {
             Integer defensa,
             Integer agilidad,
             Integer voluntad,
-            LinearLayout imagen,
+            ImageView imagen,
             ProgressBar barraSalud,
-            ProgressBar barraEnergia,
-            TextView textoFlotante) {
+            ProgressBar barraEnergia) {
         //Básicos
         this.id = id;
         this.jugador = jugador;
@@ -91,7 +90,6 @@ public class Personaje {
         this.imagen = imagen;
         this.barraSalud = barraSalud;
         this.barraEnergia = barraEnergia;
-        this.textoFlotante = textoFlotante;
 
         //Modificadores
         this.modIniciativa = 0;
@@ -124,7 +122,7 @@ public class Personaje {
         public void setDefendiendo(Boolean defendiendo) {
             this.estaDefendiendo = defendiendo;
         }
-        public LinearLayout getImagen () {
+        public ImageView getImagen () {
         return this.imagen;
     }
 
@@ -156,7 +154,7 @@ public class Personaje {
 
         actualizarBarraSalud();
 
-        mostrarTextoFlotante(danio.toString(),3000);
+        //mostrarTextoFlotante(danio.toString(),3000);
 
     }
 
@@ -170,6 +168,7 @@ public class Personaje {
         barraEnergia.setProgress(this.saludRestante);
     }
 
+    /*
     public void mostrarTextoFlotante(String texto, long delay) {
 
         textoFlotante.setX(imagen.getX() + imagen.getWidth() / 2);
@@ -196,6 +195,7 @@ public class Personaje {
         tfAnimSet.start();
 
     }
+    */
 
     public void mostrarAnimacion(String habilidad, Personaje victima, long delay) {
         switch (habilidad) {

@@ -24,7 +24,7 @@ public class Accion {
         public ArrayList<Personaje> getVictimas() {
         return this.victimas;
     }
-        public int getDelayAccion() { return this.delayAccion; }
+        public int DelayAccion() { return this.delayAccion; }
 
     //Setters
         public void setPrioridad(float prioridad) {
@@ -42,16 +42,14 @@ public class Accion {
 
 
     //Métodos con la mecánica de las acciones
-    public long ejecutar() {
-        long delay = 0;
-
+    public long ejecutar(long delayTurnos) {
         if (habilidad.modificaEnergia()) {
             ejecutor.modificaEnergiaRestante(habilidad.getEnergia());
         }
 
         if (habilidad.causaDanio()) {
             for (Personaje victima : victimas) {
-                ejecutor.mostrarAnimacion("ATACAR", victima, delayAccion);
+                ejecutor.mostrarAnimacion("ATACAR", victima, delayTurnos + delayAccion);
                 victima.recibirDanio(ejecutor.getAtaque(), habilidad.getTipoDanio());
             }
         }
@@ -60,8 +58,6 @@ public class Accion {
             ejecutor.setDefendiendo(true);
         }
 
-        delay = habilidad.getDelay();
-
-        return delay;
+        return delayTurnos + habilidad.getDelay();
     }
 }

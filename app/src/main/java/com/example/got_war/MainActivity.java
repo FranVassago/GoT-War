@@ -3,6 +3,7 @@ package com.example.got_war;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,10 +40,9 @@ public class MainActivity extends AppCompatActivity {
                 7,
                 6,
                 2,
-                findViewById(R.id.llJ1P1),
+                findViewById(R.id.ivJ1P1),
                 findViewById(R.id.pbJ1P1Salud),
-                findViewById(R.id.pbJ1P1Energia),
-                findViewById(R.id.tfJ1P1));
+                findViewById(R.id.pbJ1P1Energia));
 
         Personaje J2P1 = new Personaje(
                 "sandor",
@@ -59,30 +59,29 @@ public class MainActivity extends AppCompatActivity {
                 5,
                 4,
                 3,
-                findViewById(R.id.llJ2P1),
+                findViewById(R.id.ivJ2P1),
                 findViewById(R.id.pbJ2P1Salud),
-                findViewById(R.id.pbJ2P1Energia),
-                findViewById(R.id.tfJ2P1));
-
-        jugador1.reclutarPersonaje(J1P1);
-        jugador2.reclutarPersonaje(J2P1);
+                findViewById(R.id.pbJ2P1Energia));
 
         Habilidad J1P1H1 = new Habilidad("ATACAR",true, 10, true, "ENEMIGO", "FISICO", false, null, 2000);
         Habilidad J1P1H2 = new Habilidad("DEFENDER",true, 15, false, "PERSONAL", null, true, null, 1000);
         Habilidad J1P1H3 = new Habilidad("TEMPLANZA",true, -10, false, "PERSONAL", null, true, null, 1000);
 
+        jugador1.reclutarPersonaje(J1P1);
+        jugador2.reclutarPersonaje(J2P1);
+
         FloatingActionButton fbJ1P1H1;
-        fbJ1P1H1 = findViewById(R.id.fbJ1P1H1);
+        fbJ1P1H1 = findViewById(R.id.fbH1);
         fbJ1P1H1.setTag(J1P1H1);
         fbJ1P1H1.setOnClickListener(habilidadListener);
 
         FloatingActionButton fbJ1P1H2;
-        fbJ1P1H2 = findViewById(R.id.fbJ1P1H2);
+        fbJ1P1H2 = findViewById(R.id.fbH2);
         fbJ1P1H2.setTag(J1P1H2);
         fbJ1P1H2.setOnClickListener(habilidadListener);
 
         FloatingActionButton fbJ1P1H3;
-        fbJ1P1H3 = findViewById(R.id.fbJ1P1H3);
+        fbJ1P1H3 = findViewById(R.id.fbH3);
         fbJ1P1H3.setTag(J1P1H3);
         fbJ1P1H3.setOnClickListener(habilidadListener);
 
@@ -90,26 +89,34 @@ public class MainActivity extends AppCompatActivity {
         ivJ1P2 = findViewById(R.id.ivJ2P1);
         ivJ1P2.setOnClickListener(objetivoListener);
 
-        contienda = new Contienda(this,jugador1, jugador2);
+        TextView tvFase = findViewById(R.id.tvFase);
+        tvFase.setOnClickListener(contiendaListener);
 
-        contienda.iniciarRonda();
+        contienda = new Contienda(this,jugador1, jugador2);
 
     }
 
-
     private View.OnClickListener habilidadListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (contienda.getFase() == "SELECCIONAR.ACCION" || contienda.getFase() == "SELECCIONAR.OBJETIVO") {
+            if (contienda.getFase() == "SELECCIONAR.ACCION" || contienda.getFase() == "SELECCIONAR.OBJETIVO")
                 contienda.declararAccion((Habilidad) v.getTag());
-            }
 
         }
     };
 
     private View.OnClickListener objetivoListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (contienda.getFase() == "SELECCIONAR.OBJETIVO") {
+            if (contienda.getFase() == "SELECCIONAR.ENEMIGO") {
                 contienda.seleccionarObjetivo(jugador2, 0);
+            }
+        }
+    };
+
+    private View.OnClickListener contiendaListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            TextView tvFase = (TextView) v;
+            if (contienda.getFase() == null) {
+                contienda.iniciarRonda();
             }
         }
     };
