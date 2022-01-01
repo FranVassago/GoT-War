@@ -16,8 +16,12 @@ import android.widget.ImageView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ReproductorAnimaciones {
+    
+    private Activity context;
 
-    public ReproductorAnimaciones() {}
+    public ReproductorAnimaciones(Activity context) {
+        this.context = context;
+    }
 
     //Métodos específicos de la mecánica del juego
         public void mostrarHabilidades (ImageView imagenObjetivo, FloatingActionButton fbH1, FloatingActionButton fbH2,FloatingActionButton fbH3, FloatingActionButton fbH4, FloatingActionButton fbH5,Long delay) {
@@ -25,7 +29,6 @@ public class ReproductorAnimaciones {
             Long duration = 500L;
             Float iX = imagenObjetivo.getX() + (imagenObjetivo.getWidth() / 2) - (fbH1.getWidth() / 2);
             Float iY = imagenObjetivo.getY();
-
 
             new Handler().postDelayed(() -> animarFB(fbH1,iX, iY, +0f,  -150f, 250L,   duration, "MOSTRAR"), delay);
             new Handler().postDelayed(() -> animarFB(fbH2,iX, iY, -100f,-125f, 125L, duration, "MOSTRAR"), delay);
