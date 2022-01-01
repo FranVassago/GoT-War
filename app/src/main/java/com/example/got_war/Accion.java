@@ -32,7 +32,7 @@ public class Accion {
             Long delayTexto = 0;
             
             if (habilidad.modificaEnergia()) {
-                ejecutor.modificaEnergiaRestante(habilidad.getEnergia());
+                ejecutor.modificaEnergiaRestante(habilidad.getEnergia(), delayTurnos;
             }
     
             if (habilidad.causaDanio()) {
