@@ -54,6 +54,7 @@ public class Accion {
                 Boolean aplicable = false;
                 
                 aplicable = objetivo.incluirModificador(habilidad.getModificador());
+                
                 if (aplicable)
                     reproductorAnimaciones.textoFlotante(objetivo.getImagen(), habilidad.getModificador().getNombre(), Color.WHITE, delayTurnos + delayAccion + delayTexto);
             }
