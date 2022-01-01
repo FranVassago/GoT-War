@@ -142,8 +142,7 @@ public class ReproductorAnimaciones {
                     ObjectAnimator vueltaX;
                     ObjectAnimator vueltaY;
                     AnimatorSet animacionVuelta = new AnimatorSet();
-
-
+                    
                     vueltaX = ObjectAnimator.ofFloat(ejecutor.getImagen(), "translationX", 0);
                     vueltaY = ObjectAnimator.ofFloat(ejecutor.getImagen(), "translationY", 0);
                     animacionVuelta.playTogether(vueltaX, vueltaY);
