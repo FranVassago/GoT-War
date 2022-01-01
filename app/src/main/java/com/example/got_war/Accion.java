@@ -49,9 +49,13 @@ public class Accion {
                 delayTexto = delayTexto + 500L;
             }
     
+            //La habilidad aplica modificadores
             if (habilidad.getModificador() != null){
-                objetivo.incluirModificador(habilidad.getModificador());
-                reproductorAnimaciones.textoFlotante(objetivo.getImagen(), habilidad.getModificador().getNombre(), Color.WHITE, delayTurnos + delayAccion + delayTexto);
+                Boolean aplicable = false;
+                
+                aplicable = objetivo.incluirModificador(habilidad.getModificador());
+                if (aplicable)
+                    reproductorAnimaciones.textoFlotante(objetivo.getImagen(), habilidad.getModificador().getNombre(), Color.WHITE, delayTurnos + delayAccion + delayTexto);
             }
     
             //Animaciòn de la habilidad
