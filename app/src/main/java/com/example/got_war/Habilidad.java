@@ -15,7 +15,17 @@ public class Habilidad {
     private Modificador modificador;
     //Visual
     private long delay;
-
+    
+    //Tipos de objetivo
+    public static final Integer PERSONAL = 1;
+    public static final Integer ENEMIGO = 2;
+    public static final Integer TODOS_LOS_ENEMIGOS = 3;
+    public static final Integer TODOS_LOS_ALIADOS = 4;
+    
+    //Tipos de daño
+    public static final Integer FISICO = 1;
+    public static final Integer MAGICO = 2;
+    
     public Habilidad(
             String nombre,
             //Energía
