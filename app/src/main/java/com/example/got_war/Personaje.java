@@ -142,7 +142,10 @@ public class Personaje {
             new Handler().PostDelayed(() -> actualizarBarraEnergia(), delay);
         }
     
-        public void recibirDanio (Integer danio, String tipoDanio, Long delay) {
+        public String recibirDanio (Integer ataque, Integer modAtaque, String tipoDanio, Long delay) {
+            String resAtaque;
+            Integer danio = 0;
+            
             if (this.estaDefendiendo){
                 switch (tipoDanio) {
                     case "FISICO":
@@ -160,6 +163,10 @@ public class Personaje {
     
             new Handler().postDelayed(() -> actualizarBarraSalud(), delay);
     
+            
+            resAtaque = danio.toString() + ": " + ataque.toString() + "(+" + modAtaque.toString() + ")";
+            if (this.estaDefendiendo)
+               resAtaque = resAtaque + "(-" + this.defensa + ") (-" + this.modDefensa + ")";
         }
     
         public void actualizarBarraSalud () {
