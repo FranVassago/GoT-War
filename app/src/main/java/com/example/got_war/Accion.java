@@ -42,20 +42,24 @@ public class Accion {
 
 
     //Métodos con la mecánica de las acciones
-    public long ejecutar(long delayTurnos) {
+    public long ejecutar(long delayTurnos, ReproductorAnimaciones reproductorAnimaciones) {
         if (habilidad.modificaEnergia()) {
             ejecutor.modificaEnergiaRestante(habilidad.getEnergia());
         }
 
         if (habilidad.causaDanio()) {
             for (Personaje victima : victimas) {
-                ejecutor.mostrarAnimacion("ATACAR", victima, delayTurnos + delayAccion);
-                victima.recibirDanio(ejecutor.getAtaque(), habilidad.getTipoDanio());
+                reproductorAnimaciones.animarHabilidad(habilidad, ejecutor, victima, delayTurnos + delayAccion);
+                victima.recibirDanio(ejecutor.getAtaque(), habilidad.getTipoDanio(), delayTurnos + delayAccion);
             }
         }
 
         if (habilidad.activaDefensa()) {
             ejecutor.setDefendiendo(true);
+        }
+
+        if (habilidad.getModificador() != null){
+            ejecutor.incluirModificador(habilidad.getModificador());
         }
 
         return delayTurnos + habilidad.getDelay();

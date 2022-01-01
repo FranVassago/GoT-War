@@ -1,9 +1,13 @@
 package com.example.got_war;
 
 import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Path;
+import android.os.Handler;
 import android.text.Layout;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,6 +48,7 @@ public class Personaje {
     private ImageView imagen;
     private ProgressBar barraSalud;
     private ProgressBar barraEnergia;
+    private ArrayList<Modificador> modificadores;
 
     public Personaje(
             String id,
@@ -98,6 +104,8 @@ public class Personaje {
         this.modAgilidad = 0;
         this.modVoluntad = 0;
 
+        this.modificadores = new ArrayList<Modificador>();
+
         actualizarBarraSalud ();
         actualizarBarraEnergia();
     }
@@ -134,9 +142,11 @@ public class Personaje {
         this.energiaRestante = this.energiaRestante + energia;
         if (this.energiaRestante > this.energiaTotal)
             this.energiaRestante = this.energiaTotal;
+
+        actualizarBarraEnergia();
     }
 
-    public void recibirDanio (Integer danio, String tipoDanio) {
+    public void recibirDanio (Integer danio, String tipoDanio, Long delay) {
         if (this.estaDefendiendo){
             switch (tipoDanio) {
                 case "FISICO":
@@ -152,9 +162,9 @@ public class Personaje {
 
         saludRestante = saludRestante - danio;
 
-        actualizarBarraSalud();
+        new Handler().postDelayed(() -> actualizarBarraSalud(), delay);
 
-        //mostrarTextoFlotante(danio.toString(),3000);
+        //new Handler().postDelayed(mostrarTextoFlotante(danio.toString(), delay);
 
     }
 
@@ -164,8 +174,42 @@ public class Personaje {
     }
 
     public void actualizarBarraEnergia () {
-        barraEnergia.setMax(this.saludTotal);
-        barraEnergia.setProgress(this.saludRestante);
+        barraEnergia.setMax(this.energiaTotal);
+        barraEnergia.setProgress(this.energiaRestante);
+    }
+
+    public void incluirModificador (Modificador modificadorNuevo) {
+        int acumulados = 0;
+        boolean aplicable = false;
+
+        for (Modificador modificador : this.modificadores) {
+            if (modificador.getNombre() == modificadorNuevo.getNombre())
+                acumulados++;
+        }
+
+        if (acumulados < modificadorNuevo.getAcumulativo())
+            modificadores.add(modificadorNuevo);
+    }
+
+    public void actualizarModificadores () {
+        for (Modificador modificador : this.modificadores) {
+            this.modAtaque = 0;
+            this.modDefensa = 0;
+            this.modAgilidad = 0;
+            this.modVoluntad = 0;
+            this.modIniciativa = 0;
+
+            modificador.restarRondas();
+            if (modificador.getRondas() == 0) {
+                modificadores.remove(modificadores.indexOf(modificador));
+            } else {
+                this.modAtaque = this.modAtaque + modificador.getModAtaque();
+                this.modDefensa = this.modDefensa + modificador.getModDefensa();
+                this.modAgilidad = this.modAgilidad + modificador.getModAgilidad();
+                this.modVoluntad = this.modVoluntad + modificador.getModVoluntad();
+                this.modIniciativa = this.modIniciativa + modificador.getModIniciativa();
+            }
+        }
     }
 
     /*
@@ -197,24 +241,5 @@ public class Personaje {
     }
     */
 
-    public void mostrarAnimacion(String habilidad, Personaje victima, long delay) {
-        switch (habilidad) {
-            case "ATACAR":
-                float ejecutorX = imagen.getX();
-                float ejecutorY = imagen.getY();
-                float victimaX = victima.getImagen().getX();
-                float victimaY = victima.getImagen().getY();
-
-                Path path = new Path();
-                path.moveTo(ejecutorX, ejecutorY);
-                path.lineTo(victimaX, victimaY);
-                path.lineTo(ejecutorX, ejecutorY);
-                ObjectAnimator animator = ObjectAnimator.ofFloat(imagen, View.X, View.Y, path);
-                animator.setStartDelay(delay);
-                animator.setDuration(1000);
-                animator.start();
-                break;
-        }
-    }
 }
 

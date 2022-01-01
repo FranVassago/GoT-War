@@ -2,7 +2,10 @@ package com.example.got_war;
 
 
 import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Handler;
 import android.view.View;
@@ -24,10 +27,10 @@ public class ReproductorAnimaciones {
             Float iY = imagenObjetivo.getY();
 
 
-            new Handler().postDelayed(() -> animarFB(fbH1,iX, iY, +0f,  -150f, 0L,   duration, "MOSTRAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH1,iX, iY, +0f,  -150f, 250L,   duration, "MOSTRAR"), delay);
             new Handler().postDelayed(() -> animarFB(fbH2,iX, iY, -100f,-125f, 125L, duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH3,iX, iY, +100f,-125f, 250L, duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH4,iX, iY, -150f,-45f , 350L, duration, "MOSTRAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH3,iX, iY, +100f,-125f, 350L, duration, "MOSTRAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH4,iX, iY, -150f,-45f , 0L, duration, "MOSTRAR"), delay);
             new Handler().postDelayed(() -> animarFB(fbH5,iX, iY, +150f,-45f , 500L, duration, "MOSTRAR"), delay);
 
         }
@@ -38,11 +41,11 @@ public class ReproductorAnimaciones {
             Float iX = imagenObjetivo.getX() + (imagenObjetivo.getWidth() / 2) - (fbH1.getWidth() / 2);
             Float iY = imagenObjetivo.getY();
 
-            new Handler().postDelayed(() -> animarFB(fbH1,iX+0f  , iY-150f, +0f,  +150f, 0L,   duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH2,iX-100f, iY-125f, +100f,+125f, 125L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH3,iX+100f, iY-125f, -100f,+125f, 250L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH4,iX-150f, iY-45f , +150f,+45f , 350L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH5,iX+150f, iY-45f , -150f,+45f , 500L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH1,iX+0f  , iY-150f, +0f,  +150f, 250L,   duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH2,iX-100f, iY-125f, +100f,+125f, 350L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH3,iX+100f, iY-125f, -100f,+125f, 125L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH4,iX-150f, iY-45f , +150f,+45f , 500L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH5,iX+150f, iY-45f , -150f,+45f , 0L, duration, "OCULTAR"), delay);
         }
 
         public void animarFB(FloatingActionButton fbH, Float iX, Float iY, Float oX, Float oY, Long fbDelay, Long duration, String accion) {
@@ -92,5 +95,61 @@ public class ReproductorAnimaciones {
             animacion.playTogether(traslacion,alpha);
             animacion.start();
 
+        }
+
+        public void animarHabilidad(Habilidad habilidad, Personaje ejecutor, Personaje objetivo, Long delay) {
+            switch (habilidad.getNombre()) {
+                case "ATACAR":
+                    float ejecutorX = ejecutor.getImagen().getX();
+                    float ejecutorY = ejecutor.getImagen().getY();
+                    float objetivoX = objetivo.getImagen().getX();
+                    float objetivoY = objetivo.getImagen().getY();
+
+                    //Ida
+                    ObjectAnimator idaX;
+                    ObjectAnimator idaY;
+                    AnimatorSet animacionIda = new AnimatorSet();
+
+                    idaX = ObjectAnimator.ofFloat(ejecutor.getImagen(), "translationX", objetivoX - ejecutorX);
+                    idaY = ObjectAnimator.ofFloat(ejecutor.getImagen(), "translationY", objetivoY - ejecutorY);
+                    idaX.setupStartValues();
+                    idaY.setupStartValues();
+                    animacionIda.playTogether(idaX, idaY);
+                    animacionIda.setStartDelay(delay);
+                    animacionIda.setDuration(400L);
+
+                    animacionIda.start();
+
+                    //Daño objetivo
+                    ValueAnimator colorAnimation = new ValueAnimator();
+
+                    colorAnimation.setIntValues(Color.parseColor("#B2DC0606"), Color.parseColor("#B2FFFFFF"));
+                    colorAnimation.setEvaluator(new ArgbEvaluator());
+                    colorAnimation.addUpdateListener(valueAnimator -> objetivo.getImagen().setColorFilter((Integer) valueAnimator.getAnimatedValue()));
+                    colorAnimation.setStartDelay(delay+400L);
+                    colorAnimation.setDuration(50L);
+                    colorAnimation.setRepeatMode(ValueAnimator.RESTART);
+                    colorAnimation.setRepeatCount(3);
+
+                    colorAnimation.start();
+
+                    new Handler().postDelayed(() -> objetivo.getImagen().setColorFilter(Color.parseColor("#00FFFFFF")),delay+650L);
+
+                    //Vuelta
+                    ObjectAnimator vueltaX;
+                    ObjectAnimator vueltaY;
+                    AnimatorSet animacionVuelta = new AnimatorSet();
+
+
+                    vueltaX = ObjectAnimator.ofFloat(ejecutor.getImagen(), "translationX", 0);
+                    vueltaY = ObjectAnimator.ofFloat(ejecutor.getImagen(), "translationY", 0);
+                    animacionVuelta.playTogether(vueltaX, vueltaY);
+                    animacionVuelta.setStartDelay(delay+600L);
+                    animacionVuelta.setDuration(400L);
+
+                    animacionVuelta.start();
+
+                    break;
+            }
         }
 }

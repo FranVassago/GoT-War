@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class Contienda {
 
     private Activity context;
-
     private Jugador jugador1;
     private Jugador jugador2;
     private String fase;
@@ -26,6 +25,9 @@ public class Contienda {
     private ReproductorAnimaciones reproductorAnimaciones;
     private Long retardoAcciones;
 
+    /* NOTAS
+
+    */
 
     //Constructor
         public Contienda(Activity context, Jugador jugador1, Jugador jugador2) {
@@ -65,8 +67,8 @@ public class Contienda {
             turno = 0;
             acciones.clear();
 
+            faseMantenimiento();
             establecerTurnos();
-            actualizarModificadores();
             iniciarTurno(getPerSel());
         }
 
@@ -100,9 +102,10 @@ public class Contienda {
             }
         }
 
-        public void actualizarModificadores() {
+        public void faseMantenimiento() {
             for (Personaje personaje : personajes) {
                 personaje.setDefendiendo(false);
+                personaje.actualizarModificadores();
             }
         }
 
@@ -194,14 +197,14 @@ public class Contienda {
         }
 
         public void ejecutarAcciones (){
-            retardoAcciones = 1000L;
+            retardoAcciones = 500L;
 
             //Se ordenan las acciones por orden de prioridad
             ordenarAcciones();
 
             //Se ejecutan las acciones
             for (Accion accion : acciones) {
-                retardoAcciones = retardoAcciones + accion.ejecutar(retardoAcciones);
+                retardoAcciones = accion.ejecutar(retardoAcciones, reproductorAnimaciones);
             }
 
         }
