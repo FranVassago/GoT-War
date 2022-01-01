@@ -138,12 +138,12 @@ public class Personaje {
 
 
     //Métodos específicos de la mecánica del juego
-    public void modificaEnergiaRestante(Integer energia) {
+    public void modificaEnergiaRestante(Integer energia, long delay) {
         this.energiaRestante = this.energiaRestante + energia;
         if (this.energiaRestante > this.energiaTotal)
             this.energiaRestante = this.energiaTotal;
 
-        actualizarBarraEnergia();
+        new Handler().PostDelayed(() -> actualizarBarraEnergia(), delay);
     }
 
     public void recibirDanio (Integer danio, String tipoDanio, Long delay) {
@@ -163,8 +163,6 @@ public class Personaje {
         saludRestante = saludRestante - danio;
 
         new Handler().postDelayed(() -> actualizarBarraSalud(), delay);
-
-        //new Handler().postDelayed(mostrarTextoFlotante(danio.toString(), delay);
 
     }
 
