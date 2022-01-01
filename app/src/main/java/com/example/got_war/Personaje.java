@@ -211,35 +211,5 @@ public class Personaje {
             }
         }
     }
-
-    /*
-    public void mostrarTextoFlotante(String texto, long delay) {
-
-        textoFlotante.setX(imagen.getX() + imagen.getWidth() / 2);
-        textoFlotante.setY(imagen.getY());
-        textoFlotante.setText(texto);
-
-        textoFlotante.setVisibility(View.VISIBLE);
-        //Visualizar
-        ObjectAnimator tfAlpha1 = ObjectAnimator.ofFloat(textoFlotante,"alpha", 1f);
-        tfAlpha1.setDuration(0);
-        tfAlpha1.start();
-
-        //Animación de Desaparecer
-        ObjectAnimator tfAlpha0 = ObjectAnimator.ofFloat(textoFlotante,"alpha", 0f);
-        tfAlpha0.setDuration(delay);
-
-        //Animación de Transición Vertical
-        ObjectAnimator tfTransY = ObjectAnimator.ofFloat(textoFlotante, "translationY",-40f);
-        tfTransY.setDuration(delay);
-
-        //Animación de Texto Flotante Conjunto
-        AnimatorSet tfAnimSet = new AnimatorSet();
-        tfAnimSet.playTogether(tfAlpha0,tfTransY);
-        tfAnimSet.start();
-
-    }
-    */
-
 }
 
