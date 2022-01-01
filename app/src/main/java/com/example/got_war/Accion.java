@@ -29,6 +29,8 @@ public class Accion {
 
     //Métodos con la mecánica de las acciones
         public long ejecutar(long delayTurnos, ReproductorAnimaciones reproductorAnimaciones) {
+            Long delayTexto = 0;
+            
             if (habilidad.modificaEnergia()) {
                 ejecutor.modificaEnergiaRestante(habilidad.getEnergia());
             }
@@ -43,10 +45,13 @@ public class Accion {
     
             if (habilidad.activaDefensa()) {
                 objetivo.setDefendiendo(true);
+                reproductorAnimaciones.textoFlotante(objetivo.getImagen(), "DEFENDIENDO", Color.WHITE, delayTurnos + delayAccion + delayTexto);
+                delayTexto = delayTexto + 500L;
             }
     
             if (habilidad.getModificador() != null){
                 objetivo.incluirModificador(habilidad.getModificador());
+                reproductorAnimaciones.textoFlotante(objetivo.getImagen(), habilidad.getModificador().getNombre(), Color.WHITE, delayTurnos + delayAccion + delayTexto);
             }
     
             //Animaciòn de la habilidad
