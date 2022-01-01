@@ -48,26 +48,16 @@ public class Habilidad {
     }
 
     //Getters
-        public String getNombre() {
-        return nombre;
-    }
-        public int getEnergia() {
-        return energia;
-    }
-        public String getTipoObjetivo() {
-        return tipoObjetivo;
-    }
-        public String getTipoDanio() {
-        return tipoDanio;
-    }
-        public Modificador getModificador() { return modificador; }
-        public long getDelay() { return delay; }
+        public String getNombre() { return this.nombre; }
+        public int getEnergia() { return this.energia; }
+        public String getTipoObjetivo() { return this.tipoObjetivo; }
+        public String getTipoDanio() { return this.tipoDanio; }
+        public Modificador getModificador() { return this.modificador; }
+        public long getDelay() { return this.delay; }
 
     //Booleans
         public Boolean causaDanio() { return this.causaDanio; }
         public Boolean modificaEnergia() { return this.modificaEnergia; }
-        public Boolean activaDefensa() {
-            return activaDefensa;
-        }
+        public Boolean activaDefensa() { return this.activaDefensa; }
 
 }
