@@ -29,12 +29,15 @@ public class Accion {
 
     //Métodos con la mecánica de las acciones
         public long ejecutar(long delayTurnos, ReproductorAnimaciones reproductorAnimaciones) {
+            
             Long delayTexto = 0;
             
+            //La habilidad consume o genera energia
             if (habilidad.modificaEnergia()) {
                 ejecutor.modificaEnergiaRestante(habilidad.getEnergia(), delayTurnos;
             }
     
+            //La habilidad causa daño
             if (habilidad.causaDanio()) {
                 String resAtaque;
                 for (Personaje objetivo : objetivos) {
@@ -43,6 +46,7 @@ public class Accion {
                 }
             }
     
+            //La habilidad activa el modo defensa
             if (habilidad.activaDefensa()) {
                 objetivo.setDefendiendo(true);
                 reproductorAnimaciones.textoFlotante(objetivo.getImagen(), "DEFENDIENDO", Color.WHITE, delayTurnos + delayAccion + delayTexto);
