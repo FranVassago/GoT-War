@@ -178,7 +178,7 @@ public class Personaje {
         barraEnergia.setProgress(this.energiaRestante);
     }
 
-    public void incluirModificador (Modificador modificadorNuevo) {
+    public Boolean incluirModificador (Modificador modificadorNuevo) {
         int acumulados = 0;
         boolean aplicable = false;
 
@@ -188,7 +188,12 @@ public class Personaje {
         }
 
         if (acumulados < modificadorNuevo.getAcumulativo())
+        {
             modificadores.add(modificadorNuevo);
+            aplicable = true;
+        }
+        
+        return aplicable;
     }
 
     public void actualizarModificadores () {
