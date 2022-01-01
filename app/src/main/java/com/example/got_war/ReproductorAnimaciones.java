@@ -152,4 +152,51 @@ public class ReproductorAnimaciones {
                     break;
             }
         }
+        
+        
+        public void mostrarTextoFlotante (ImageView objetivo, String texto, Color color, Long delay) {
+            
+            new Handler().postDelayed(() -> generarTextoFlotante(objetivo, texto, color), delay);
+        
+        }
+        
+        
+        public void generarTextoFlotante (ImageView objetivo, String texto, Color color) {
+            
+            TextView textoFlotante = new TextView(context);
+
+            //Id, texto, color y tamaño
+            textoFlotante.setId(View.generateViewId());
+            textoFlotante.setText(texto);
+            textoFlotante.setTextSize(15);
+            textoFlotante.setTextColor(color);
+            
+            //Se situa el textview sobre el objetivo
+            ConstraintLayout clGlobal = (ConstraintLayout) context.findViewById(R.id.clGlobal);
+            ConstraintSet cSet = new ConstraintSet();
+            cSet.clone(clGlobal);
+            cSet.connect(textoFlotante.getId(), ConstraintSet.LEFT, objetivo.getId(), ConstraintSet.LEFT, 0);      
+            cSet.connect(textoFlotante.getId(), ConstraintSet.RIGHT, objetivo.getId(), ConstraintSet.RIGHT, 0);      
+            cSet.connect(textoFlotante.getId(), ConstraintSet.TOP, objetivo.getId(), ConstraintSet.TOP, 0);
+            cSet.applyTo(textoFlotante);
+            
+            //Se muestra el textview en pantalla
+            clGlobal.addView(textoFlotante, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            
+            //Animación de Desaparecer
+            ObjectAnimator tfAlpha0 = ObjectAnimator.ofFloat(textoFlotante,"alpha", 0f);
+            tfAlpha0.setDuration(3000);
+    
+            //Animación de Transición Vertical
+            ObjectAnimator tfTransY = ObjectAnimator.ofFloat(textoFlotante, "translationY",-40f);
+            tfTransY.setDuration(3000);
+    
+            //Animación de Texto Flotante Conjunto
+            AnimatorSet tfAnimSet = new AnimatorSet();
+            tfAnimSet.playTogether(tfAlpha0,tfTransY);
+            tfAnimSet.start();
+            
+            new Handler().postDelayed(() -> textoFlotante.setVisibility(View.GONE), 3000);
+            
+        }
 }
