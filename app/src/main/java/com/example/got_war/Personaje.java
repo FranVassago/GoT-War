@@ -112,107 +112,103 @@ public class Personaje {
 
     //Getters
         public String getNombre() { return this.nombre; }
-        public Integer getJugador() {
-            return this.jugador;
-        }
+        public Integer getJugador() { return this.jugador; }
         public int getEnergiaRestante() { return this.energiaRestante; }
         public int getSaludRestante() { return this.saludRestante; }
         public Float getIniciativa () { return (float) this.iniciativa + this.modIniciativa + ((this.voluntad + this.modVoluntad) / 100); }
-        public Integer getVoluntad() {
-            return this.voluntad + this.modVoluntad;
-        }
-        public Integer getAtaque() {
-            return this.ataque + this.modAtaque;
-        }
-        public Integer getDefensa() {
-            return this.defensa + this.modDefensa;
-        }
-        public void setDefendiendo(Boolean defendiendo) {
-            this.estaDefendiendo = defendiendo;
-        }
-        public ImageView getImagen () {
-        return this.imagen;
-    }
+        public Integer getVoluntad() { return this.voluntad + this.modVoluntad; }
+        public Integer getAtaque() { return this.ataque + this.modAtaque; }
+        public Integer getDefensa() { return this.defensa + this.modDefensa; }
+        public ImageView getImagen () { return this.imagen; }
 
     //Setters
-
+       public void setDefendiendo(Boolean defendiendo) {
+            this.estaDefendiendo = defendiendo;
+        }
 
     //Métodos específicos de la mecánica del juego
-    public void modificaEnergiaRestante(Integer energia, long delay) {
-        this.energiaRestante = this.energiaRestante + energia;
-        if (this.energiaRestante > this.energiaTotal)
-            this.energiaRestante = this.energiaTotal;
-
-        new Handler().PostDelayed(() -> actualizarBarraEnergia(), delay);
-    }
-
-    public void recibirDanio (Integer danio, String tipoDanio, Long delay) {
-        if (this.estaDefendiendo){
-            switch (tipoDanio) {
-                case "FISICO":
-                    danio = danio - getDefensa();
-                    break;
-                case "MAGICO":
-                    danio = danio - getVoluntad();
-                    break;
-            }
-        }
-
-        if (danio < 0) danio = 0;
-
-        saludRestante = saludRestante - danio;
-
-        new Handler().postDelayed(() -> actualizarBarraSalud(), delay);
-
-    }
-
-    public void actualizarBarraSalud () {
-        barraSalud.setMax(this.saludTotal);
-        barraSalud.setProgress(this.saludRestante);
-    }
-
-    public void actualizarBarraEnergia () {
-        barraEnergia.setMax(this.energiaTotal);
-        barraEnergia.setProgress(this.energiaRestante);
-    }
-
-    public Boolean incluirModificador (Modificador modificadorNuevo) {
-        int acumulados = 0;
-        boolean aplicable = false;
-
-        for (Modificador modificador : this.modificadores) {
-            if (modificador.getNombre() == modificadorNuevo.getNombre())
-                acumulados++;
-        }
-
-        if (acumulados < modificadorNuevo.getAcumulativo())
-        {
-            modificadores.add(modificadorNuevo);
-            aplicable = true;
+        public Integer generarAtaque () {
+            Integer max = this.ataque;
+            Integer min = Math.round(this.ataque / 2);
+            
+            return (int) ((Math.random() * (max - min)) + min);
         }
         
-        return aplicable;
-    }
-
-    public void actualizarModificadores () {
-        for (Modificador modificador : this.modificadores) {
-            this.modAtaque = 0;
-            this.modDefensa = 0;
-            this.modAgilidad = 0;
-            this.modVoluntad = 0;
-            this.modIniciativa = 0;
-
-            modificador.restarRondas();
-            if (modificador.getRondas() == 0) {
-                modificadores.remove(modificadores.indexOf(modificador));
-            } else {
-                this.modAtaque = this.modAtaque + modificador.getModAtaque();
-                this.modDefensa = this.modDefensa + modificador.getModDefensa();
-                this.modAgilidad = this.modAgilidad + modificador.getModAgilidad();
-                this.modVoluntad = this.modVoluntad + modificador.getModVoluntad();
-                this.modIniciativa = this.modIniciativa + modificador.getModIniciativa();
+        public void modificaEnergiaRestante(Integer energia, long delay) {
+            this.energiaRestante = this.energiaRestante + energia;
+            if (this.energiaRestante > this.energiaTotal)
+                this.energiaRestante = this.energiaTotal;
+    
+            new Handler().PostDelayed(() -> actualizarBarraEnergia(), delay);
+        }
+    
+        public void recibirDanio (Integer danio, String tipoDanio, Long delay) {
+            if (this.estaDefendiendo){
+                switch (tipoDanio) {
+                    case "FISICO":
+                        danio = danio - getDefensa();
+                        break;
+                    case "MAGICO":
+                        danio = danio - getVoluntad();
+                        break;
+                }
+            }
+    
+            if (danio < 0) danio = 0;
+    
+            saludRestante = saludRestante - danio;
+    
+            new Handler().postDelayed(() -> actualizarBarraSalud(), delay);
+    
+        }
+    
+        public void actualizarBarraSalud () {
+            barraSalud.setMax(this.saludTotal);
+            barraSalud.setProgress(this.saludRestante);
+        }
+    
+        public void actualizarBarraEnergia () {
+            barraEnergia.setMax(this.energiaTotal);
+            barraEnergia.setProgress(this.energiaRestante);
+        }
+    
+        public Boolean incluirModificador (Modificador modificadorNuevo) {
+            int acumulados = 0;
+            boolean aplicable = false;
+    
+            for (Modificador modificador : this.modificadores) {
+                if (modificador.getNombre() == modificadorNuevo.getNombre())
+                    acumulados++;
+            }
+    
+            if (acumulados < modificadorNuevo.getAcumulativo())
+            {
+                modificadores.add(modificadorNuevo);
+                aplicable = true;
+            }
+            
+            return aplicable;
+        }
+    
+        public void actualizarModificadores () {
+            for (Modificador modificador : this.modificadores) {
+                this.modAtaque = 0;
+                this.modDefensa = 0;
+                this.modAgilidad = 0;
+                this.modVoluntad = 0;
+                this.modIniciativa = 0;
+    
+                modificador.restarRondas();
+                if (modificador.getRondas() == 0) {
+                    modificadores.remove(modificadores.indexOf(modificador));
+                } else {
+                    this.modAtaque = this.modAtaque + modificador.getModAtaque();
+                    this.modDefensa = this.modDefensa + modificador.getModDefensa();
+                    this.modAgilidad = this.modAgilidad + modificador.getModAgilidad();
+                    this.modVoluntad = this.modVoluntad + modificador.getModVoluntad();
+                    this.modIniciativa = this.modIniciativa + modificador.getModIniciativa();
+                }
             }
         }
-    }
 }
 
