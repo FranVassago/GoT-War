@@ -6,19 +6,19 @@ public class Accion {
     private Float prioridad;
     private Personaje ejecutor;
     private Habilidad habilidad;
-    private ArrayList<Personaje> victimas;
+    private ArrayList<Personaje> objetivos;
     private int delayAccion;
 
     //Constructor
     public Accion() {
-        this.victimas = new ArrayList<Personaje>();
+        this.objetivos = new ArrayList<Personaje>();
     }
 
     //Getters
         public float getPrioridad() { return this.prioridad; }
         public Habilidad getHabilidad() { return this.habilidad; }
-        public ArrayList<Personaje> getVictimas() { return this.victimas; }
-        public int DelayAccion() { return this.delayAccion; }
+        public ArrayList<Personaje> getObjetivos() { return this.objetivos; }
+        public int getDelayAccion() { return this.delayAccion; }
 
     //Setters
         public void setPrioridad(float prioridad) { this.prioridad = prioridad; }
@@ -34,20 +34,24 @@ public class Accion {
             }
     
             if (habilidad.causaDanio()) {
-                for (Personaje victima : victimas) {
-                    reproductorAnimaciones.animarHabilidad(habilidad, ejecutor, victima, delayTurnos + delayAccion);
-                    reproductorAnimaciones.textoFlotante(victima, texto, Color.RED, delayTurnos + delayAccion);
-                    victima.recibirDanio(ejecutor.getAtaque(), habilidad.getTipoDanio(), delayTurnos + delayAccion);
+                String resAtaque;
+                for (Personaje objetivo : objetivos) {
+                    resAtaque = objetivo.recibirDanio(ejecutor.getAtaque(), ejecutor.getModAtaque(), habilidad.getTipoDanio(), delayTurnos + delayAccion);
+                    reproductorAnimaciones.textoFlotante(objetivo, resAtaque, Color.RED, delayTurnos + delayAccion);
                 }
             }
     
             if (habilidad.activaDefensa()) {
-                ejecutor.setDefendiendo(true);
+                objetivo.setDefendiendo(true);
             }
     
             if (habilidad.getModificador() != null){
-                ejecutor.incluirModificador(habilidad.getModificador());
+                objetivo.incluirModificador(habilidad.getModificador());
             }
+    
+            //Animaciòn de la habilidad
+            reproductorAnimaciones.animarHabilidad(habilidad, ejecutor, objetivo, delayTurnos + delayAccion);
+                    
     
             return delayTurnos + habilidad.getDelay();
         }
