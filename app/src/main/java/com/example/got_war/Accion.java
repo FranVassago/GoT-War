@@ -37,7 +37,7 @@ public class Accion {
                 String resAtaque;
                 for (Personaje objetivo : objetivos) {
                     resAtaque = objetivo.recibirDanio(ejecutor.getAtaque(), ejecutor.getModAtaque(), habilidad.getTipoDanio(), delayTurnos + delayAccion);
-                    reproductorAnimaciones.textoFlotante(objetivo, resAtaque, Color.RED, delayTurnos + delayAccion);
+                    reproductorAnimaciones.textoFlotante(objetivo.getImagen(), resAtaque, Color.RED, delayTurnos + delayAccion);
                 }
             }
     
