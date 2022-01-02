@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clGlobal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -10,18 +11,18 @@
         <!-- ****************** -->
         <!-- Indicador de Fases -->
         <!-- ****************** -->
-    <TextView
-        android:id="@+id/tvFase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="TOCA PARA COMENZAR"
-        android:textColor="#9C2626"
-        android:textSize="30dp"
-        android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvFase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="TOCA PARA COMENZAR"
+            android:textColor="#9C2626"
+            android:textSize="30dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <!-- *********** -->
@@ -55,9 +56,10 @@
             android:foreground="@drawable/ic_atacar"
             android:alpha="0"
             android:layout_marginBottom="25dp"
-            app:layout_constraintBottom_toTopOf="@+id/ivJ1P1"
-            app:layout_constraintStart_toStartOf="@+id/ivJ1P1"
-            app:layout_constraintEnd_toEndOf="@+id/ivJ1P1"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fbH2"
@@ -110,7 +112,7 @@
             <ProgressBar
                 android:id="@+id/pbJ1P1Salud"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="11dp"
                 app:layout_constraintBottom_toTopOf="@id/pbJ1P1Energia"
                 app:layout_constraintRight_toRightOf="@id/ivJ1P1"
@@ -122,11 +124,12 @@
             <ProgressBar
                 android:id="@+id/pbJ1P1Energia"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="11dp"
                 app:layout_constraintBottom_toTopOf="@id/ivJ1P1"
                 app:layout_constraintRight_toRightOf="@id/ivJ1P1"
                 app:layout_constraintLeft_toLeftOf="@id/ivJ1P1"
+                android:layout_marginBottom="5dp"
                 android:max="100"
                 android:progress="30"
                 android:progressTint="#FFC107" />
@@ -142,6 +145,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="0.85"/>
 
+
         <!-- ********************************************** -->
         <!-- Bloque de Vistas del Personaje 2 del Jugador 2 -->
         <!-- ********************************************** -->
@@ -150,7 +154,7 @@
             <ProgressBar
                 android:id="@+id/pbJ2P1Salud"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="11dp"
                 app:layout_constraintBottom_toTopOf="@id/pbJ2P1Energia"
                 app:layout_constraintRight_toRightOf="@id/ivJ2P1"
@@ -162,25 +166,25 @@
             <ProgressBar
                 android:id="@+id/pbJ2P1Energia"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="11dp"
                 app:layout_constraintBottom_toTopOf="@id/ivJ2P1"
                 app:layout_constraintRight_toRightOf="@id/ivJ2P1"
                 app:layout_constraintLeft_toLeftOf="@id/ivJ2P1"
+                android:layout_marginBottom="5dp"
                 android:max="100"
                 android:progress="10"
                 android:progressTint="#FFC107" />
 
-    <ImageView
-        android:id="@+id/ivJ2P1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="ivJ2P1"
-        android:tint="#00FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineHP1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="@+id/guidelineCenter"
-        app:srcCompat="@drawable/sandor" />
+            <ImageView
+                android:id="@+id/ivJ2P1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="ivJ2P1"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineHP1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="@+id/guidelineCenter"
+                app:srcCompat="@drawable/sandor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
                 0,
                 "Sandor Clegane",
                 "Clegane",
-                100,
-                100,
+                70,
+                70,
                 60,
                 60,
                 7,
-                15,
+                16,
                 5,
                 4,
                 3,
@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.pbJ2P1Energia));
 
         Modificador templanza = new Modificador("TEMPLANZA",2,1,0,0,5,5,0,5);
-        Habilidad J1P1H1 = new Habilidad("ATACAR",true, 10, true, "ENEMIGO", "FISICO", false, null, 1000);
-        Habilidad J1P1H2 = new Habilidad("DEFENDER",true, 15, false, "PERSONAL", null, true, null, 1000);
-        Habilidad J1P1H3 = new Habilidad("TEMPLANZA",true, -10, false, "PERSONAL", null, true, templanza, 1000);
+        Habilidad J1P1H1 = new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true,  "FISICO", false, null, 1000);
+        Habilidad J1P1H2 = new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, null, 1000);
+        Habilidad J1P1H3 = new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, templanza, 1000);
 
         jugador1.reclutarPersonaje(J1P1);
         jugador2.reclutarPersonaje(J2P1);

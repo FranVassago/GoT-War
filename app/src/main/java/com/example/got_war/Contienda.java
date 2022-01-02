@@ -1,14 +1,7 @@
 package com.example.got_war;
 
 import android.app.Activity;
-import android.app.VoiceInteractor;
-import android.os.Handler;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -22,8 +15,8 @@ public class Contienda {
     private Accion declaracion;
     private ArrayList<Accion> acciones;
     private ArrayList<Personaje> personajes;
-    private ReproductorAnimaciones reproductorAnimaciones;
-    private Long retardoAcciones;
+    private Animacion animacion;
+    private Long delayAcciones;
 
     /* NOTAS
 
@@ -37,8 +30,8 @@ public class Contienda {
 
             this.acciones = new ArrayList<Accion>();
             this.personajes = new ArrayList<Personaje>();
-            this.reproductorAnimaciones = new ReproductorAnimaciones();
-            this.retardoAcciones = 0L;
+            this.animacion = new Animacion(context);
+            this.delayAcciones = 0L;
         }
 
     //Getters
@@ -92,7 +85,7 @@ public class Contienda {
                 reordenado = false;
                 for (int i = 0; i < personajes.size(); i++) {
                     if (i > 0)
-                        if (personajes.get(i - 1).getIniciativa() > personajes.get(i).getIniciativa()) {
+                        if (personajes.get(i - 1).getIniciativaTot() > personajes.get(i).getIniciativaTot()) {
                             personajeAux = personajes.get(i - 1);
                             personajes.set(i - 1, personajes.get(i));
                             personajes.set(i, personajeAux);
@@ -115,22 +108,22 @@ public class Contienda {
 
             if (getJugador(personaje).esIA())
             {
-                Habilidad J2P1H1 = new Habilidad("ATACAR",true, 10, true, "ENEMIGO", "FISICO", false, null, 2000);
+                Habilidad J2P1H1 = new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true, "FISICO", false, null, 2000);
                 declaracion.setPrioridad(getPerSel().getIniciativa());
                 declaracion.setEjecutor(personaje);
                 declaracion.setHabilidad(J2P1H1);
-                declaracion.setVictimas(jugador1.getEquipo().get(0));
+                declaracion.setObjetivos(jugador1.getEquipo().get(0));
                 acciones.add(declaracion);
                 siguienteTurno();
             } else {
-                reproductorAnimaciones.mostrarHabilidades(
+                animacion.mostrarHabilidades(
                         getPerSel().getImagen(),
                         context.findViewById(R.id.fbH1),
                         context.findViewById(R.id.fbH2),
                         context.findViewById(R.id.fbH3),
                         context.findViewById(R.id.fbH4),
                         context.findViewById(R.id.fbH5),
-                        retardoAcciones);
+                        delayAcciones);
                 setFase("SELECCIONAR.ACCION");
                 actualizarTvFase();
             }
@@ -140,18 +133,13 @@ public class Contienda {
 
             setFase("DECLARACION");
 
+            declaracion.setPrioridad(habilidad.getPrioridad(getPerSel().getIniciativaTot()));
             declaracion.setEjecutor(getPerSel());
             declaracion.setHabilidad(habilidad);
 
-            if (habilidad.getNombre() == "DEFENDER") {
-               declaracion.setPrioridad((float) 100 + getPerSel().getVoluntad() / 100);
-            } else {
-               declaracion.setPrioridad(getPerSel().getIniciativa());
-            }
-
             switch (habilidad.getTipoObjetivo()) {
                 case "PERSONAL":
-                    declaracion.setVictimas(getPerSel());
+                    declaracion.setObjetivos(getPerSel());
                     acciones.add(declaracion);
                     siguienteTurno();
                     break;
@@ -169,14 +157,14 @@ public class Contienda {
         }
 
         public void seleccionarObjetivo(Jugador jugador, Integer posicion) {
-            declaracion.setVictimas(jugador.getEquipo().get(posicion));
+            declaracion.setObjetivos(jugador.getEquipo().get(posicion));
             acciones.add(declaracion);
             siguienteTurno();
         }
 
         public void siguienteTurno() {
             if (getJugador(getPerSel()).esHumano()) {
-                reproductorAnimaciones.ocultarHabilidades(
+                animacion.ocultarHabilidades(
                         getPerSel().getImagen(),
                         context.findViewById(R.id.fbH1),
                         context.findViewById(R.id.fbH2),
@@ -197,36 +185,37 @@ public class Contienda {
         }
 
         public void ejecutarAcciones (){
-            retardoAcciones = 500L;
 
             //Se ordenan las acciones por orden de prioridad
             ordenarAcciones();
 
             //Se ejecutan las acciones
+            delayAcciones = 500L;
             for (Accion accion : acciones) {
-                retardoAcciones = accion.ejecutar(retardoAcciones, reproductorAnimaciones);
+                delayAcciones = delayAcciones + accion.ejecutar(delayAcciones, animacion);
             }
+            delayAcciones = delayAcciones + 1000L;
 
         }
 
-    public void ordenarAcciones() {
-        Boolean reordenado = true;
-        Accion accionAux = null;
+        public void ordenarAcciones() {
+            Boolean reordenado = true;
+            Accion accionAux = null;
 
-        while (reordenado) {
-            reordenado = false;
-            for (int i = 0; i < acciones.size(); i++) {
-                if (i > 0) {
-                    if (acciones.get(i - 1).getPrioridad() > acciones.get(i).getPrioridad()) {
-                        accionAux = acciones.get(i - 1);
-                        acciones.set(i - 1, acciones.get(i));
-                        acciones.set(i, accionAux);
-                        reordenado = true;
+            while (reordenado) {
+                reordenado = false;
+                for (int i = 0; i < acciones.size(); i++) {
+                    if (i > 0) {
+                        if (acciones.get(i - 1).getPrioridad() < acciones.get(i).getPrioridad()) {
+                            accionAux = acciones.get(i - 1);
+                            acciones.set(i - 1, acciones.get(i));
+                            acciones.set(i, accionAux);
+                            reordenado = true;
+                        }
                     }
                 }
             }
         }
-    }
 
     //Metodos Gestion Elementos Visuales
         public void actualizarTvFase ()

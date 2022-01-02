@@ -5,21 +5,34 @@ import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class ReproductorAnimaciones {
+import java.util.ArrayList;
+
+public class Animacion {
     
     private Activity context;
 
-    public ReproductorAnimaciones(Activity context) {
+    public static final Integer MOSTRAR = 1;
+    public static final Integer OCULTAR = 2;
+
+
+    public Animacion(Activity context) {
         this.context = context;
     }
 
@@ -108,6 +121,9 @@ public class ReproductorAnimaciones {
                     float objetivoX = objetivo.getImagen().getX();
                     float objetivoY = objetivo.getImagen().getY();
 
+                    //Ocultar barras
+                    animarBarra(ejecutor.getBarraSalud(), ejecutor.getBarraEnergia(), OCULTAR, delay);
+
                     //Ida
                     ObjectAnimator idaX;
                     ObjectAnimator idaY;
@@ -138,6 +154,20 @@ public class ReproductorAnimaciones {
 
                     new Handler().postDelayed(() -> objetivo.getImagen().setColorFilter(Color.parseColor("#00FFFFFF")),delay+650L);
 
+                    //Sacudida
+                    Path path = new Path();
+                    path.moveTo(objetivoX, objetivoY);
+                    path.lineTo(objetivoX + 5, objetivoY);
+                    path.lineTo(objetivoX - 5, objetivoY);
+
+                    ObjectAnimator sacudida = ObjectAnimator.ofFloat(objetivo.getImagen(), View.X, View.Y, path);
+                    sacudida.setStartDelay(delay+400L);
+                    sacudida.setDuration(100L);
+                    sacudida.setRepeatMode(ObjectAnimator.RESTART);
+                    sacudida.setRepeatCount(3);
+
+                    sacudida.start();
+
                     //Vuelta
                     ObjectAnimator vueltaX;
                     ObjectAnimator vueltaY;
@@ -151,54 +181,78 @@ public class ReproductorAnimaciones {
 
                     animacionVuelta.start();
 
+                    //Mostrar barras
+                    animarBarra(ejecutor.getBarraSalud(), ejecutor.getBarraEnergia(), MOSTRAR,delay+1000L);
+
                     break;
             }
         }
         
         
-        public void mostrarTextoFlotante (ImageView objetivo, String texto, Color color, Long delay) {
+        public void textoFlotante (ImageView objetivo, String texto, int color, Long delay) {
             
-            new Handler().postDelayed(() -> generarTextoFlotante(objetivo, texto, color), delay);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    ConstraintLayout clGlobal = (ConstraintLayout) objetivo.getParent();
+                    TextView textoFlotante = new TextView(context);
+
+                    //Id, texto, color y tamaño
+                    textoFlotante.setId(View.generateViewId());
+                    textoFlotante.setText(texto);
+                    textoFlotante.setTextSize(15);
+                    textoFlotante.setTextColor(color);
+
+                    //Se muestra el textview en pantalla
+                    clGlobal.addView(textoFlotante, new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
+
+                    //Se situa el textview sobre el objetivo
+                    ConstraintSet cSet = new ConstraintSet();
+                    cSet.clone(clGlobal);
+                    cSet.connect(textoFlotante.getId(), ConstraintSet.LEFT, objetivo.getId(), ConstraintSet.LEFT, 0);
+                    cSet.connect(textoFlotante.getId(), ConstraintSet.RIGHT, objetivo.getId(), ConstraintSet.RIGHT, 0);
+                    cSet.connect(textoFlotante.getId(), ConstraintSet.BOTTOM, objetivo.getId(), ConstraintSet.TOP, 20);
+                    cSet.applyTo(clGlobal);
+
+                    //Animación de Desaparecer
+                    ObjectAnimator tfAlpha0 = ObjectAnimator.ofFloat(textoFlotante,"alpha", 0f);
+                    tfAlpha0.setDuration(3000);
+
+                    //Animación de Transición Vertical
+                    ObjectAnimator tfTransY = ObjectAnimator.ofFloat(textoFlotante, "translationY",-150f);
+                    tfTransY.setInterpolator(new LinearInterpolator());
+                    tfTransY.setDuration(3000);
+
+                    //Animación de Texto Flotante Conjunto
+                    AnimatorSet tfAnimSet = new AnimatorSet();
+                    tfAnimSet.playTogether(tfAlpha0,tfTransY);
+                    tfAnimSet.start();
+
+                    new Handler().postDelayed(() -> textoFlotante.setVisibility(View.GONE), 3000);
+                }
+            }, delay);
         
         }
         
         
-        public void generarTextoFlotante (ImageView objetivo, String texto, Color color) {
-            
-            TextView textoFlotante = new TextView(context);
+        public void animarBarra (ProgressBar pbS, ProgressBar pbE, Integer accion, Long delay) {
 
-            //Id, texto, color y tamaño
-            textoFlotante.setId(View.generateViewId());
-            textoFlotante.setText(texto);
-            textoFlotante.setTextSize(15);
-            textoFlotante.setTextColor(color);
-            
-            //Se situa el textview sobre el objetivo
-            ConstraintLayout clGlobal = (ConstraintLayout) context.findViewById(R.id.clGlobal);
-            ConstraintSet cSet = new ConstraintSet();
-            cSet.clone(clGlobal);
-            cSet.connect(textoFlotante.getId(), ConstraintSet.LEFT, objetivo.getId(), ConstraintSet.LEFT, 0);      
-            cSet.connect(textoFlotante.getId(), ConstraintSet.RIGHT, objetivo.getId(), ConstraintSet.RIGHT, 0);      
-            cSet.connect(textoFlotante.getId(), ConstraintSet.TOP, objetivo.getId(), ConstraintSet.TOP, 0);
-            cSet.applyTo(textoFlotante);
-            
-            //Se muestra el textview en pantalla
-            clGlobal.addView(textoFlotante, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            
-            //Animación de Desaparecer
-            ObjectAnimator tfAlpha0 = ObjectAnimator.ofFloat(textoFlotante,"alpha", 0f);
-            tfAlpha0.setDuration(3000);
-    
-            //Animación de Transición Vertical
-            ObjectAnimator tfTransY = ObjectAnimator.ofFloat(textoFlotante, "translationY",-40f);
-            tfTransY.setDuration(3000);
-    
-            //Animación de Texto Flotante Conjunto
-            AnimatorSet tfAnimSet = new AnimatorSet();
-            tfAnimSet.playTogether(tfAlpha0,tfTransY);
-            tfAnimSet.start();
-            
-            new Handler().postDelayed(() -> textoFlotante.setVisibility(View.GONE), 3000);
-            
+            float alphaValue;
+
+            if (accion == MOSTRAR)
+                alphaValue = 1f;
+            else
+                alphaValue = 0f;
+
+            ObjectAnimator alphaS = ObjectAnimator.ofFloat(pbS,"alpha", alphaValue);
+            alphaS.setStartDelay(delay);
+            alphaS.setDuration(500L);
+            alphaS.start();
+
+            ObjectAnimator alphaE = ObjectAnimator.ofFloat(pbE,"alpha", alphaValue);
+            alphaE.setStartDelay(delay);
+            alphaE.setDuration(500L);
+            alphaE.start();
         }
 }

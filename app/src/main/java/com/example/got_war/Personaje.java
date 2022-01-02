@@ -1,27 +1,10 @@
 package com.example.got_war;
 
-import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.Path;
 import android.os.Handler;
-import android.text.Layout;
-import android.view.View;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import androidx.annotation.ColorInt;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Personaje {
     private String id;
@@ -111,15 +94,36 @@ public class Personaje {
     }
 
     //Getters
-        public String getNombre() { return this.nombre; }
+        //Básicos
+        public String  getNombre() { return this.nombre; }
         public Integer getJugador() { return this.jugador; }
-        public int getEnergiaRestante() { return this.energiaRestante; }
-        public int getSaludRestante() { return this.saludRestante; }
-        public Float getIniciativa () { return (float) this.iniciativa + this.modIniciativa + ((this.voluntad + this.modVoluntad) / 100); }
-        public Integer getVoluntad() { return this.voluntad + this.modVoluntad; }
-        public Integer getAtaque() { return this.ataque + this.modAtaque; }
-        public Integer getDefensa() { return this.defensa + this.modDefensa; }
+
+        //Estadísticas
+        public Integer getEnergiaRestante() { return this.energiaRestante; }
+        public Integer getSaludRestante() { return this.saludRestante; }
+
+        public Integer getIniciativa() { return this.iniciativa; }
+        public Integer getAtaque() { return this.ataque; }
+        public Integer getDefensa() { return this.defensa; }
+        public Integer getAgilidad() { return this.agilidad; }
+        public Integer getVoluntad() { return this.voluntad; }
+
+        public Integer getModIniciativa() { return this.modIniciativa; }
+        public Integer getModAtaque() { return this.modAtaque; }
+        public Integer getModDefensa() { return this.modDefensa; }
+        public Integer getModAgilidad() { return this.modAgilidad; }
+        public Integer getModVoluntad() { return this.modVoluntad; }
+
+        public Float   getIniciativaTot() { return (float) this.iniciativa + this.modIniciativa + ((this.voluntad + this.modVoluntad) / 100); }
+        public Integer getAtaqueTot() { return this.ataque + this.modAtaque; }
+        public Integer getDefensaTot() { return this.defensa + this.modDefensa; }
+        public Integer getAgilidadTot() { return this.agilidad + this.modAgilidad; }
+        public Integer getVoluntadTot() { return this.voluntad + this.modVoluntad; }
+
+        //Visuales
         public ImageView getImagen () { return this.imagen; }
+        public ProgressBar getBarraSalud () { return this.barraSalud; }
+        public ProgressBar getBarraEnergia () { return this.barraEnergia; }
 
     //Setters
        public void setDefendiendo(Boolean defendiendo) {
@@ -127,46 +131,88 @@ public class Personaje {
         }
 
     //Métodos específicos de la mecánica del juego
-        public Integer generarAtaque () {
-            Integer max = this.ataque;
-            Integer min = Math.round(this.ataque / 2);
+        public Integer generarAtaque (String tipoDanio) {
+            Integer max;
+            Integer min;
+
+            if (tipoDanio == "FISICO") {
+                max = this.ataque;
+                min = Math.round(this.ataque / 2);
+            } else { //"MAGICO"
+                max = this.voluntad;
+                min = Math.round(this.voluntad / 2);
+            }
             
             return (int) ((Math.random() * (max - min)) + min);
         }
+
+        public Boolean evitarAtaque(String tipoEvitacion) {
+
+            Boolean evitado = false;
+            Integer tirada = (int) ((Math.random() * (100 - 1)) + 1);
+
+
+            if (tipoEvitacion == "AGILIDAD" && tirada <= this.agilidad)
+                evitado = true;
+
+            if (tipoEvitacion == "VOLUNTAD" && tirada <= this.voluntad)
+                evitado = true;
+
+            return evitado;
+        }
         
-        public void modificaEnergiaRestante(Integer energia, long delay) {
+        public void modificarEnergia(Integer energia, long delay) {
             this.energiaRestante = this.energiaRestante + energia;
             if (this.energiaRestante > this.energiaTotal)
                 this.energiaRestante = this.energiaTotal;
     
-            new Handler().PostDelayed(() -> actualizarBarraEnergia(), delay);
+            new Handler().postDelayed(() -> actualizarBarraEnergia(), delay);
+        }
+
+        public void modificarSalud(Integer salud, long delay) {
+            this.saludRestante = this.saludRestante + salud;
+            if (this.saludRestante > this.saludTotal)
+                this.saludRestante = this.saludTotal;
+
+            if (this.saludRestante < 0)
+                this.saludRestante = 0;
+
+            new Handler().postDelayed(() -> actualizarBarraSalud(), delay);
         }
     
-        public String recibirDanio (Integer ataque, Integer modAtaque, String tipoDanio, Long delay) {
+        public String recibirDanio (Integer danio, Integer modDanio, String tipoDanio, Long delay) {
+
             String resAtaque;
-            Integer danio = 0;
+            Integer danioTotal = danio + modDanio;
             
             if (this.estaDefendiendo){
                 switch (tipoDanio) {
                     case "FISICO":
-                        danio = danio - getDefensa();
+                        danioTotal = danio + modDanio - getDefensaTot();
                         break;
                     case "MAGICO":
-                        danio = danio - getVoluntad();
+                        danioTotal = danio + modDanio - getVoluntadTot();
                         break;
                 }
             }
     
-            if (danio < 0) danio = 0;
-    
-            saludRestante = saludRestante - danio;
-    
-            new Handler().postDelayed(() -> actualizarBarraSalud(), delay);
-    
-            
-            resAtaque = danio.toString() + ": " + ataque.toString() + "(+" + modAtaque.toString() + ")";
+            if (danioTotal < 0) {
+                //El excedente defendido se convierte en energía
+                modificarEnergia(-danioTotal, delay);
+
+                //Se anula el daño
+                danioTotal = 0;
+            }
+
+            //Se aplica el ataque a la salud
+            modificarSalud(-danioTotal, delay);
+
+            //Se genera el texto de la tirada
+            resAtaque = danioTotal.toString() + ": [" + danio.toString() + "] (+" + modDanio.toString() + ")";
             if (this.estaDefendiendo)
                resAtaque = resAtaque + "(-" + this.defensa + ") (-" + this.modDefensa + ")";
+
+            return resAtaque;
         }
     
         public void actualizarBarraSalud () {

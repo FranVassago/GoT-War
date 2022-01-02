@@ -1,8 +1,10 @@
 package com.example.got_war;
 
 public class Habilidad {
+    //Básicos
     private String nombre;
     private String tipoObjetivo; // PERSONAL - ENEMIGO - TODOS_LOS_ENEMIGOS - ALIADO - TODOS_LOS_ALIADOS
+    private Integer tipoPrioridad; // INSTANTANEA - INICIATIVA
     //Energia
     private Boolean modificaEnergia;
     private int energia;
@@ -15,25 +17,31 @@ public class Habilidad {
     private Modificador modificador;
     //Visual
     private long delay;
-    
+
     //Tipos de objetivo
     public static final Integer PERSONAL = 1;
     public static final Integer ENEMIGO = 2;
     public static final Integer TODOS_LOS_ENEMIGOS = 3;
     public static final Integer TODOS_LOS_ALIADOS = 4;
-    
+
+    //Tipo de Prioridad
+    public static final Integer INSTANTANEA = 1;
+    public static final Integer INICIATIVA = 2;
+
     //Tipos de daño
     public static final Integer FISICO = 1;
     public static final Integer MAGICO = 2;
     
     public Habilidad(
+            //Básicos
             String nombre,
+            String tipoObjetivo,
+            Integer tipoPrioridad,
             //Energía
             Boolean modificaEnergia,
-            int energia,
+            Integer energia,
             //Ataque
             Boolean causaDanio,
-            String tipoObjetivo,
             String tipoDanio,
             //Defensa
             Boolean activaDefensa,
@@ -42,12 +50,13 @@ public class Habilidad {
             //Visual
             long delay) {
         this.nombre = nombre;
+        this.tipoObjetivo = tipoObjetivo;
+        this.tipoPrioridad = tipoPrioridad;
         //Energia
         this.modificaEnergia = modificaEnergia;
         this.energia = energia;
         //Ataque
         this.causaDanio = causaDanio;
-        this.tipoObjetivo = tipoObjetivo;
         this.tipoDanio = tipoDanio;
         //Defensa
         this.activaDefensa = activaDefensa;
@@ -64,6 +73,12 @@ public class Habilidad {
         public String getTipoDanio() { return this.tipoDanio; }
         public Modificador getModificador() { return this.modificador; }
         public long getDelay() { return this.delay; }
+        public Float getPrioridad(Float iniciativa) {
+            if (this.tipoPrioridad == INSTANTANEA)
+                return 9999f;
+            else
+                return iniciativa;
+        }
 
     //Booleans
         public Boolean causaDanio() { return this.causaDanio; }
