@@ -16,25 +16,21 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 
 public class Animacion {
-    
-    private Activity context;
 
-    public static final Integer MOSTRAR = 1;
-    public static final Integer OCULTAR = 2;
+    //Constantes
+        public static final Integer MOSTRAR = 1;
+        public static final Integer OCULTAR = 2;
 
 
-    public Animacion(Activity context) {
-        this.context = context;
-    }
+    // Constructor
+        public Animacion(Activity context) {}
+
 
     //Métodos específicos de la mecánica del juego
         public void mostrarHabilidades (ImageView imagenObjetivo, FloatingActionButton fbH1, FloatingActionButton fbH2,FloatingActionButton fbH3, FloatingActionButton fbH4, FloatingActionButton fbH5,Long delay) {
@@ -51,17 +47,17 @@ public class Animacion {
 
         }
 
-        public void ocultarHabilidades (ImageView imagenObjetivo, FloatingActionButton fbH1, FloatingActionButton fbH2,FloatingActionButton fbH3, FloatingActionButton fbH4, FloatingActionButton fbH5,Long delay) {
+        public void ocultarHabilidades (ImageView imagenObjetivo, FloatingActionButton fbH1, FloatingActionButton fbH2,FloatingActionButton fbH3, FloatingActionButton fbH4, FloatingActionButton fbH5, Long delay) {
 
             Long duration = 500L;
             Float iX = imagenObjetivo.getX() + (imagenObjetivo.getWidth() / 2) - (fbH1.getWidth() / 2);
             Float iY = imagenObjetivo.getY();
 
-            new Handler().postDelayed(() -> animarFB(fbH1,iX+0f  , iY-150f, +0f,  +150f, 250L,   duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH2,iX-100f, iY-125f, +100f,+125f, 350L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH3,iX+100f, iY-125f, -100f,+125f, 125L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH4,iX-150f, iY-45f , +150f,+45f , 500L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH5,iX+150f, iY-45f , -150f,+45f , 0L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH1, iX+0f  , iY-150f, +0f  , +150f, 250L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH2, iX-100f, iY-125f, +100f, +125f, 350L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH3, iX+100f, iY-125f, -100f, +125f, 125L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH4, iX-150f, iY-45f , +150f, +45f , 500L, duration, "OCULTAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH5, iX+150f, iY-45f , -150f, +45f , 0L  , duration, "OCULTAR"), delay);
         }
 
         public void animarFB(FloatingActionButton fbH, Float iX, Float iY, Float oX, Float oY, Long fbDelay, Long duration, String accion) {
@@ -196,7 +192,7 @@ public class Animacion {
                 public void run() {
 
                     ConstraintLayout clGlobal = (ConstraintLayout) objetivo.getParent();
-                    TextView textoFlotante = new TextView(context);
+                    TextView textoFlotante = new TextView(objetivo.getContext());
 
                     //Id, texto, color y tamaño
                     textoFlotante.setId(View.generateViewId());
