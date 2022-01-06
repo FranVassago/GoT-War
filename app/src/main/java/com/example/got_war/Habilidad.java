@@ -17,20 +17,22 @@ public class Habilidad {
     private Modificador modificador;
     //Visual
     private long delay;
+    private Float alpha;
 
-    //Tipos de objetivo
-    public static final Integer PERSONAL = 1;
-    public static final Integer ENEMIGO = 2;
-    public static final Integer TODOS_LOS_ENEMIGOS = 3;
-    public static final Integer TODOS_LOS_ALIADOS = 4;
-
-    //Tipo de Prioridad
-    public static final Integer INSTANTANEA = 1;
-    public static final Integer INICIATIVA = 2;
-
-    //Tipos de daño
-    public static final Integer FISICO = 1;
-    public static final Integer MAGICO = 2;
+    //Constantes
+        //Tipos de objetivo
+        public static final Integer PERSONAL = 1;
+        public static final Integer ENEMIGO = 2;
+        public static final Integer TODOS_LOS_ENEMIGOS = 3;
+        public static final Integer TODOS_LOS_ALIADOS = 4;
+    
+        //Tipo de Prioridad
+        public static final Integer INSTANTANEA = 1;
+        public static final Integer INICIATIVA = 2;
+    
+        //Tipos de daño
+        public static final Integer FISICO = 1;
+        public static final Integer MAGICO = 2;
     
     public Habilidad(
             //Básicos
@@ -48,7 +50,8 @@ public class Habilidad {
             //Modificadores
             Modificador modificador,
             //Visual
-            long delay) {
+            long delay,
+            Float alpha) {
         this.nombre = nombre;
         this.tipoObjetivo = tipoObjetivo;
         this.tipoPrioridad = tipoPrioridad;
@@ -64,6 +67,7 @@ public class Habilidad {
         this.modificador = modificador;
         //Visual
         this.delay = delay;
+        this.alpha = alpha;
     }
 
     //Getters
