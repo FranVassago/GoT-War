@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
     private Contienda contienda;
     private Jugador jugador1;
     private Jugador jugador2;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +66,11 @@ public class MainActivity extends AppCompatActivity {
             Habilidad J1P1H2 = new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, null, 1000);
             Habilidad J1P1H3 = new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, templanza, 1000);
             Habilidad J1P1H4 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
+            Habilidad J1P1H5 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
             
-            
-        jugador1.reclutarPersonaje(J1P1);
-        jugador2.reclutarPersonaje(J2P1);
+        //Se asignan los personajes a los jugadores
+            jugador1.reclutarPersonaje(J1P1);
+            jugador2.reclutarPersonaje(J2P1);
 
         //Se cargan los floating action buttons
             FloatingActionButton fbJ1P1H1;
