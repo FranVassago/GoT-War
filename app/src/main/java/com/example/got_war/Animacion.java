@@ -39,11 +39,11 @@ public class Animacion {
             Float iX = imagenObjetivo.getX() + (imagenObjetivo.getWidth() / 2) - (fbH1.getWidth() / 2);
             Float iY = imagenObjetivo.getY();
 
-            new Handler().postDelayed(() -> animarFB(fbH1,iX, iY, +0f,  -150f, 250L,   duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH2,iX, iY, -100f,-125f, 125L, duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH3,iX, iY, +100f,-125f, 350L, duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH4,iX, iY, -150f,-45f , 0L, duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH5,iX, iY, +150f,-45f , 500L, duration, "MOSTRAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH1,iX, iY, +0f,   -150f, 250L, duration, "MOSTRAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH2,iX, iY, -100f, -125f, 125L, duration, "MOSTRAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH3,iX, iY, +100f, -125f, 350L, duration, "MOSTRAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH4,iX, iY, -150f, -45f , 0L,   duration, "MOSTRAR"), delay);
+            new Handler().postDelayed(() -> animarFB(fbH5,iX, iY, +150f, -45f , 500L, duration, "MOSTRAR"), delay);
 
         }
 
