@@ -63,28 +63,43 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.pbJ2P1Salud),
                 findViewById(R.id.pbJ2P1Energia));
 
-        Modificador templanza = new Modificador("TEMPLANZA",2,1,0,0,5,5,0,5);
-        Habilidad J1P1H1 = new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true,  "FISICO", false, null, 1000);
-        Habilidad J1P1H2 = new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, null, 1000);
-        Habilidad J1P1H3 = new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, templanza, 1000);
-
+        //Se construyen las habilidades y los modificadores
+            Modificador templanza = new Modificador("TEMPLANZA",2,1,0,0,5,5,0,5);
+            Habilidad J1P1H1 = new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true,  "FISICO", false, null, 1000);
+            Habilidad J1P1H2 = new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, null, 1000);
+            Habilidad J1P1H3 = new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, templanza, 1000);
+            Habilidad J1P1H4 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
+            
+            
         jugador1.reclutarPersonaje(J1P1);
         jugador2.reclutarPersonaje(J2P1);
 
-        FloatingActionButton fbJ1P1H1;
-        fbJ1P1H1 = findViewById(R.id.fbH1);
-        fbJ1P1H1.setTag(J1P1H1);
-        fbJ1P1H1.setOnClickListener(habilidadListener);
+        //Se cargan los floating action buttons
+            FloatingActionButton fbJ1P1H1;
+            fbJ1P1H1 = findViewById(R.id.fbH1);
+            fbJ1P1H1.setTag(J1P1H1);
+            fbJ1P1H1.setOnClickListener(habilidadListener);
+    
+            FloatingActionButton fbJ1P1H2;
+            fbJ1P1H2 = findViewById(R.id.fbH2);
+            fbJ1P1H2.setTag(J1P1H2);
+            fbJ1P1H2.setOnClickListener(habilidadListener);
+    
+            FloatingActionButton fbJ1P1H3;
+            fbJ1P1H3 = findViewById(R.id.fbH3);
+            fbJ1P1H3.setTag(J1P1H3);
+            fbJ1P1H3.setOnClickListener(habilidadListener);
+            
+            FloatingActionButton fbJ1P1H4;
+            fbJ1P1H4 = findViewById(R.id.fbH4);
+            fbJ1P1H4.setTag(J1P1H4);
+            fbJ1P1H4.setOnClickListener(habilidadListener);
+    
+            FloatingActionButton fbJ1P1H5;
+            fbJ1P1H5 = findViewById(R.id.fbH5);
+            fbJ1P1H5.setTag(J1P1H5);
+            fbJ1P1H5.setOnClickListener(habilidadListener);
 
-        FloatingActionButton fbJ1P1H2;
-        fbJ1P1H2 = findViewById(R.id.fbH2);
-        fbJ1P1H2.setTag(J1P1H2);
-        fbJ1P1H2.setOnClickListener(habilidadListener);
-
-        FloatingActionButton fbJ1P1H3;
-        fbJ1P1H3 = findViewById(R.id.fbH3);
-        fbJ1P1H3.setTag(J1P1H3);
-        fbJ1P1H3.setOnClickListener(habilidadListener);
 
         ImageView ivJ1P2;
         ivJ1P2 = findViewById(R.id.ivJ2P1);
