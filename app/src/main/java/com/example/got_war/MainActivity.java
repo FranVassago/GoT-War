@@ -22,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
         jugador1 = new Jugador(1, "Vassago", "HUMANO");
         jugador2 = new Jugador(2, "IA00001", "IA");
 
+        //Se construyen las habilidades y los modificadores
+            Modificador templanza = new Modificador("TEMPLANZA",2,1,0,0,5,5,0,5);
+            Habilidad J1P1H1 = new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true,  "FISICO", false, null, 1000);
+            Habilidad J1P1H2 = new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, null, 1000);
+            Habilidad J1P1H3 = new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, templanza, 1000);
+            Habilidad J1P1H4 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
+            Habilidad J1P1H5 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
+
         Personaje J1P1 = new Personaje(
                 "brienne",
                 1,
@@ -40,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.ivJ1P1),
                 findViewById(R.id.pbJ1P1Salud),
                 findViewById(R.id.pbJ1P1Energia));
+
+        J1P1.addHabilidad(J1P1H1);
+        J1P1.addHabilidad(J1P1H2);
+        J1P1.addHabilidad(J1P1H3);
+        J1P1.addHabilidad(J1P1H4);
+        J1P1.addHabilidad(J1P1H5);
 
         Personaje J2P1 = new Personaje(
                 "sandor",
@@ -60,14 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.pbJ2P1Salud),
                 findViewById(R.id.pbJ2P1Energia));
 
-        //Se construyen las habilidades y los modificadores
-            Modificador templanza = new Modificador("TEMPLANZA",2,1,0,0,5,5,0,5);
-            Habilidad J1P1H1 = new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true,  "FISICO", false, null, 1000);
-            Habilidad J1P1H2 = new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, null, 1000);
-            Habilidad J1P1H3 = new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, templanza, 1000);
-            Habilidad J1P1H4 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
-            Habilidad J1P1H5 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
-            
         //Se asignan los personajes a los jugadores
             jugador1.reclutarPersonaje(J1P1);
             jugador2.reclutarPersonaje(J2P1);
