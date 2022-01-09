@@ -32,6 +32,7 @@ public class Personaje {
     private ProgressBar barraSalud;
     private ProgressBar barraEnergia;
     private ArrayList<Modificador> modificadores;
+    private ArrayList<Habilidad> habilidades;
 
     public Personaje(
             String id,
@@ -88,6 +89,7 @@ public class Personaje {
         this.modVoluntad = 0;
 
         this.modificadores = new ArrayList<Modificador>();
+        this.habilidades = new ArrayList<habilidades>();
 
         actualizarBarraSalud ();
         actualizarBarraEnergia();
@@ -97,6 +99,9 @@ public class Personaje {
         //Básicos
         public String  getNombre() { return this.nombre; }
         public Integer getJugador() { return this.jugador; }
+
+        //Habilidades
+        public ArrayList<Habilidad> getHabilidades { return this.habilidades; }
 
         //Estadísticas
         public Integer getEnergiaRestante() { return this.energiaRestante; }
@@ -131,6 +136,10 @@ public class Personaje {
         }
 
     //Métodos específicos de la mecánica del juego
+        public void addHabilidad (Habilidad habilidad) {
+            this.habilidades.add(habilidad);
+        }
+        
         public Integer generarAtaque (String tipoDanio) {
             Integer max;
             Integer min;
