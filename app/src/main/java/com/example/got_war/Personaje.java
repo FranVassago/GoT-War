@@ -101,7 +101,8 @@ public class Personaje {
         public Integer getJugador() { return this.jugador; }
 
         //Habilidades
-        public ArrayList<Habilidad> getHabilidades { return this.habilidades; }
+        public ArrayList<Habilidad> getHabilidades() { return this.habilidades; }
+        public Habilidad getHabilidad(Integer pos) { return this.habilidades.get(pos); }
 
         //Estadísticas
         public Integer getEnergiaRestante() { return this.energiaRestante; }
