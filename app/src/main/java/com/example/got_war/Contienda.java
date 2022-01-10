@@ -17,13 +17,22 @@ public class Contienda {
     private ArrayList<Personaje> personajes;
     private Animacion animacion;
     private Long delayAcciones;
+    
+    private ArrayList<FloatingActionButton> fbHabilidades;
 
     /* NOTAS
 
     */
 
     //Constructor
-        public Contienda(Activity context, Jugador jugador1, Jugador jugador2) {
+        public Contienda(Activity context, 
+                         Jugador jugador1, 
+                         Jugador jugador2, 
+                         FloatingActionButton fbH1,
+                         FloatingActionButton fbH2,
+                         FloatingActionButton fbH3,
+                         FloatingActionButton fbH4,
+                         FloatingActionButton fbH5) {
             this.context = context;
             this.jugador1 = jugador1;
             this.jugador2 = jugador2;
@@ -32,6 +41,13 @@ public class Contienda {
             this.personajes = new ArrayList<Personaje>();
             this.animacion = new Animacion(context);
             this.delayAcciones = 0L;
+            
+            this.fbHabilidades = new ArrayList<FloatingActionButton>();
+            this.fbHabilidades.add(fbH1);
+            this.fbHabilidades.add(fbH2);
+            this.fbHabilidades.add(fbH3);
+            this.fbHabilidades.add(fbH4);
+            this.fbHabilidades.add(fbH5);
         }
 
     //Getters
