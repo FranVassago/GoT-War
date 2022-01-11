@@ -18,7 +18,7 @@ public class Contienda {
     private Animacion animacion;
     private Long delayAcciones;
     
-    private ArrayList<FloatingActionButton> fbHabilidades;
+    private FloatingActionButton[] fbHabilidades;
 
     /* NOTAS
 
@@ -42,12 +42,7 @@ public class Contienda {
             this.animacion = new Animacion(context);
             this.delayAcciones = 0L;
             
-            this.fbHabilidades = new ArrayList<FloatingActionButton>();
-            this.fbHabilidades.add(fbH1);
-            this.fbHabilidades.add(fbH2);
-            this.fbHabilidades.add(fbH3);
-            this.fbHabilidades.add(fbH4);
-            this.fbHabilidades.add(fbH5);
+            this.fbHabilidades = new FloatingActionButton[] { fbH1, fbH2, fbH3, fbH4, fbH5 };
         }
 
     //Getters
