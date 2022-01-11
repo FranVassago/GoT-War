@@ -19,14 +19,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Se construyen los jugadores
         jugador1 = new Jugador(1, "Vassago", "HUMANO");
         jugador2 = new Jugador(2, "IA00001", "IA");
 
-        //Se construyen las habilidades y los modificadores
-            Modificador templanza = new Modificador("TEMPLANZA",2,1,0,0,5,5,0,5);
-            Habilidad J1P1H4 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, 0,5f, null);
-            Habilidad J1P1H5 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, 0.5f, null);
-           
+        //Se construyen los personajes
         Personaje J1P1 = new Personaje(
                 "brienne",
                 1,
@@ -48,15 +45,9 @@ public class MainActivity extends AppCompatActivity {
                 new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true,  "FISICO", false, 1000, 1f, null),
                 new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, 1000, 1f, null),
                 new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, 1000, 1f, 
-            
-            
-            );
-
-        J1P1.addHabilidad(J1P1H1);
-        J1P1.addHabilidad(J1P1H2);
-        J1P1.addHabilidad(J1P1H3);
-        J1P1.addHabilidad(J1P1H4);
-        J1P1.addHabilidad(J1P1H5);
+                   new Modificador("TEMPLANZA",2,1,0,0,5,5,0,5)),
+                new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, 0,5f, null),
+                new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, 0.5f, null));
 
         Personaje J2P1 = new Personaje(
                 "sandor",
@@ -82,40 +73,29 @@ public class MainActivity extends AppCompatActivity {
             jugador2.reclutarPersonaje(J2P1);
 
         //Se cargan los floating action buttons
-            FloatingActionButton fbJ1P1H1;
-            fbJ1P1H1 = findViewById(R.id.fbH1);
-            fbJ1P1H1.setTag(J1P1H1);
-            fbJ1P1H1.setOnClickListener(habilidadListener);
+            FloatingActionButton fbH1 = findViewById(R.id.fbH1);
+            fbH1.setOnClickListener(habilidadListener);
     
-            FloatingActionButton fbJ1P1H2;
-            fbJ1P1H2 = findViewById(R.id.fbH2);
-            fbJ1P1H2.setTag(J1P1H2);
-            fbJ1P1H2.setOnClickListener(habilidadListener);
+            FloatingActionButton fbH2 = findViewById(R.id.fbH2);
+            fbH2.setOnClickListener(habilidadListener);
     
-            FloatingActionButton fbJ1P1H3;
-            fbJ1P1H3 = findViewById(R.id.fbH3);
-            fbJ1P1H3.setTag(J1P1H3);
-            fbJ1P1H3.setOnClickListener(habilidadListener);
+            FloatingActionButton fbH3 = findViewById(R.id.fbH3);
+            fbH3.setOnClickListener(habilidadListener);
             
-            FloatingActionButton fbJ1P1H4;
-            fbJ1P1H4 = findViewById(R.id.fbH4);
-            fbJ1P1H4.setTag(J1P1H4);
-            fbJ1P1H4.setOnClickListener(habilidadListener);
+            FloatingActionButton fbH4 = findViewById(R.id.fbH4);
+            fbH4.setOnClickListener(habilidadListener);
     
-            FloatingActionButton fbJ1P1H5;
-            fbJ1P1H5 = findViewById(R.id.fbH5);
-            fbJ1P1H5.setTag(J1P1H5);
-            fbJ1P1H5.setOnClickListener(habilidadListener);
+            FloatingActionButton fbH5 = findViewById(R.id.fbH5);
+            fbH5.setOnClickListener(habilidadListener);
 
 
-        ImageView ivJ1P2;
-        ivJ1P2 = findViewById(R.id.ivJ2P1);
+        ImageView ivJ1P2 = findViewById(R.id.ivJ2P1);
         ivJ1P2.setOnClickListener(objetivoListener);
 
         TextView tvFase = findViewById(R.id.tvFase);
         tvFase.setOnClickListener(contiendaListener);
 
-        contienda = new Contienda(this,jugador1, jugador2);
+        contienda = new Contienda(jugador1, jugador2, fbH1, fbH2, fbH3, fbH4, fbH5);
 
     }
 
