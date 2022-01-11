@@ -47,11 +47,11 @@ public class Habilidad {
             String tipoDanio,
             //Defensa
             Boolean activaDefensa,
-            //Modificadores
-            Modificador modificador,
             //Visual
             long delay,
-            Float alpha) {
+            Float alpha,
+            //Modificadores
+            Modificador modificador) {
         this.nombre = nombre;
         this.tipoObjetivo = tipoObjetivo;
         this.tipoPrioridad = tipoPrioridad;
