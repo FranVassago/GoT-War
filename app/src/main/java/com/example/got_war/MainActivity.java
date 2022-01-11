@@ -24,12 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Se construyen las habilidades y los modificadores
             Modificador templanza = new Modificador("TEMPLANZA",2,1,0,0,5,5,0,5);
-            Habilidad J1P1H1 = new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true,  "FISICO", false, null, 1000);
-            Habilidad J1P1H2 = new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, null, 1000);
-            Habilidad J1P1H3 = new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, templanza, 1000);
-            Habilidad J1P1H4 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
-            Habilidad J1P1H5 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, null);
-
+            Habilidad J1P1H4 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, 0,5f, null);
+            Habilidad J1P1H5 = new Habilidad("BLOQUEADA",null,null, null, null, null,  null, null, null, 0.5f, null);
+           
         Personaje J1P1 = new Personaje(
                 "brienne",
                 1,
@@ -47,7 +44,13 @@ public class MainActivity extends AppCompatActivity {
                 2,
                 findViewById(R.id.ivJ1P1),
                 findViewById(R.id.pbJ1P1Salud),
-                findViewById(R.id.pbJ1P1Energia));
+                findViewById(R.id.pbJ1P1Energia)
+                new Habilidad("ATACAR","ENEMIGO",Habilidad.INICIATIVA, true, 10, true,  "FISICO", false, 1000, 1f, null),
+                new Habilidad("DEFENDER","PERSONAL", Habilidad.INSTANTANEA, true, 10, false, null, true, 1000, 1f, null),
+                new Habilidad("TEMPLANZA","PERSONAL",Habilidad.INSTANTANEA, true, -10, false,  null, true, 1000, 1f, 
+            
+            
+            );
 
         J1P1.addHabilidad(J1P1H1);
         J1P1.addHabilidad(J1P1H2);
