@@ -33,7 +33,6 @@ public class Contienda {
                          FloatingActionButton fbH3,
                          FloatingActionButton fbH4,
                          FloatingActionButton fbH5) {
-            this.context = context;
             this.jugador1 = jugador1;
             this.jugador2 = jugador2;
 
