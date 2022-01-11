@@ -32,7 +32,7 @@ public class Personaje {
     private ProgressBar barraSalud;
     private ProgressBar barraEnergia;
     private ArrayList<Modificador> modificadores;
-    private ArrayList<Habilidad> habilidades;
+    private Habilidad[] habilidades;
 
     public Personaje(
             String id,
@@ -51,7 +51,12 @@ public class Personaje {
             Integer voluntad,
             ImageView imagen,
             ProgressBar barraSalud,
-            ProgressBar barraEnergia) {
+            ProgressBar barraEnergia,
+            Habilidad H1,
+            Habilidad H2,
+            Habilidad H3,
+            Habilidad H4,
+            Habilidad H5) {
         //Básicos
         this.id = id;
         this.jugador = jugador;
@@ -89,7 +94,7 @@ public class Personaje {
         this.modVoluntad = 0;
 
         this.modificadores = new ArrayList<Modificador>();
-        this.habilidades = new ArrayList<habilidades>();
+        this.habilidades = new Habilidad[] { H1, H2, H3, H4, H5 };
 
         actualizarBarraSalud ();
         actualizarBarraEnergia();
@@ -101,8 +106,8 @@ public class Personaje {
         public Integer getJugador() { return this.jugador; }
 
         //Habilidades
-        public ArrayList<Habilidad> getHabilidades() { return this.habilidades; }
-        public Habilidad getHabilidad(Integer pos) { return this.habilidades.get(pos); }
+        public Habilidad[] getHabilidades() { return this.habilidades; }
+        public Habilidad getHabilidad(Integer pos) { return this.habilidades(pos); }
 
         //Estadísticas
         public Integer getEnergiaRestante() { return this.energiaRestante; }
