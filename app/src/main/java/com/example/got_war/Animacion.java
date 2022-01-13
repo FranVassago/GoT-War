@@ -25,8 +25,10 @@ public class Animacion {
 
     //Constantes
         public static final Integer MOSTRAR = 1;
-        public static final Integer OCULTAR = 2;
-
+        public static final Integer OCULTAR = -1;
+        public static final Float [] FBX = { 0f, -100f, +100f, -150f, +150f };
+        public static final Float [] FBY = { -150f, -125f, -125f, -45f, -45f };
+        public static final Long  [] FBD = { 250L, 125L, 350L, 0L, 500L };
 
     // Constructor
         public Animacion(Activity context) {}
@@ -49,10 +51,7 @@ public class Animacion {
 
         public void ocultarHabilidades (ImageView imagenObjetivo, FloatingActionButton fbH1, FloatingActionButton fbH2,FloatingActionButton fbH3, FloatingActionButton fbH4, FloatingActionButton fbH5, Long delay) {
 
-            Long duration = 500L;
-            Float iX = imagenObjetivo.getX() + (imagenObjetivo.getWidth() / 2) - (fbH1.getWidth() / 2);
-            Float iY = imagenObjetivo.getY();
-
+            
             new Handler().postDelayed(() -> animarFB(fbH1, iX+0f  , iY-150f, +0f  , +150f, 250L, duration, "OCULTAR"), delay);
             new Handler().postDelayed(() -> animarFB(fbH2, iX-100f, iY-125f, +100f, +125f, 350L, duration, "OCULTAR"), delay);
             new Handler().postDelayed(() -> animarFB(fbH3, iX+100f, iY-125f, -100f, +125f, 125L, duration, "OCULTAR"), delay);
@@ -60,31 +59,44 @@ public class Animacion {
             new Handler().postDelayed(() -> animarFB(fbH5, iX+150f, iY-45f , -150f, +45f , 0L  , duration, "OCULTAR"), delay);
         }
 
-        public void animarFB(FloatingActionButton fbH, Float iX, Float iY, Float oX, Float oY, Long fbDelay, Long duration, String accion) {
+        public void animarFB(ImageView imagenObjetivo, FloatingActionButton[] fbH, Integer accion, Long delay) {
 
-            AnimatorSet animacion = new AnimatorSet();
-            ObjectAnimator traslacion;
-            ObjectAnimator alpha;
-            Path path = new Path();
-            Habilidad habilidad;
-            String nombreHabilidad;
+            Float alphaFrom;
+            Float alphaTo;
+            Long duration = 500L;
+            Float iX = imagenObjetivo.getX() + (imagenObjetivo.getWidth() / 2) - (fbH1.getWidth() / 2);
+            Float iY = imagenObjetivo.getY();
 
-            if (fbH.getTag() != null){
-                habilidad = (Habilidad) fbH.getTag();
-                nombreHabilidad = habilidad.getNombre();
-            } else {
-                nombreHabilidad = "NULL";
+            if (accion == MOSTRAR){
+                alphaFrom = 0f;
+                alphaTo = habilidad.alpha;
+            } else { // OCULTAR
+                alphaFrom = habilidad.alpha;
+                alphaTo = 0f;
             }
+
+            Path path = new Path();
+            path.moveTo(iX, iY);
+            path.lineTo(iX + oX, iY + oY);
+            
+            ObjectAnimator traslacion = ObjectAnimator.ofFloat(fbH, View.X, View.Y, path);
+
+            
+            AnimatorSet animacion = new AnimatorSet();
+            
+            ObjectAnimator alpha;
+            
+            Habilidad habilidad = (Habilidad) fbH.getTag();
+
+            
 
             //Se lleva el botón al personaje objetivo
             fbH.setX(iX);
             fbH.setY(iY);
 
             //Establecemos la animación de traslación
-            path.moveTo(iX, iY);
-            path.lineTo(iX + oX, iY + oY);
-            traslacion = ObjectAnimator.ofFloat(fbH, View.X, View.Y, path);
-
+            
+            
             if (accion == "MOSTRAR") {
                 traslacion.setInterpolator(new OvershootInterpolator());
                 if (nombreHabilidad == "BLOQUEADO" || nombreHabilidad == "NULL")
