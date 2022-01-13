@@ -126,14 +126,7 @@ public class Contienda {
                 acciones.add(declaracion);
                 siguienteTurno();
             } else {
-                animacion.mostrarHabilidades(
-                        getPerSel().getImagen(),
-                        context.findViewById(R.id.fbH1),
-                        context.findViewById(R.id.fbH2),
-                        context.findViewById(R.id.fbH3),
-                        context.findViewById(R.id.fbH4),
-                        context.findViewById(R.id.fbH5),
-                        delayAcciones);
+                animacion.mostrarHabilidades(getPerSel().getImagen(), fbHabilidades, delayAcciones);
                 setFase("SELECCIONAR.ACCION");
                 actualizarTvFase();
             }
@@ -174,14 +167,7 @@ public class Contienda {
 
         public void siguienteTurno() {
             if (getJugador(getPerSel()).esHumano()) {
-                animacion.ocultarHabilidades(
-                        getPerSel().getImagen(),
-                        context.findViewById(R.id.fbH1),
-                        context.findViewById(R.id.fbH2),
-                        context.findViewById(R.id.fbH3),
-                        context.findViewById(R.id.fbH4),
-                        context.findViewById(R.id.fbH5),
-                        0L);
+                animacion.ocultarHabilidades(getPerSel().getImagen(),fbHabilidades);
             }
 
             turno++;
