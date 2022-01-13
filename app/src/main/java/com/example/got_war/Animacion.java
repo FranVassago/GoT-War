@@ -35,90 +35,47 @@ public class Animacion {
 
 
     //Métodos específicos de la mecánica del juego
-        public void mostrarHabilidades (ImageView imagenObjetivo, FloatingActionButton fbH1, FloatingActionButton fbH2,FloatingActionButton fbH3, FloatingActionButton fbH4, FloatingActionButton fbH5,Long delay) {
-
-            Long duration = 500L;
-            Float iX = imagenObjetivo.getX() + (imagenObjetivo.getWidth() / 2) - (fbH1.getWidth() / 2);
-            Float iY = imagenObjetivo.getY();
-
-            new Handler().postDelayed(() -> animarFB(fbH1,iX, iY, +0f,   -150f, 250L, duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH2,iX, iY, -100f, -125f, 125L, duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH3,iX, iY, +100f, -125f, 350L, duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH4,iX, iY, -150f, -45f , 0L,   duration, "MOSTRAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH5,iX, iY, +150f, -45f , 500L, duration, "MOSTRAR"), delay);
-
+        public void mostrarHabilidades (ImageView ivObjetivo, FloatingActionButton[] fbH, Long delay) {
+            new Handler().postDelayed(() -> animarFB(ivObjetivo, fbH, MOSTRAR), delay);
         }
 
-        public void ocultarHabilidades (ImageView imagenObjetivo, FloatingActionButton fbH1, FloatingActionButton fbH2,FloatingActionButton fbH3, FloatingActionButton fbH4, FloatingActionButton fbH5, Long delay) {
-
-            
-            new Handler().postDelayed(() -> animarFB(fbH1, iX+0f  , iY-150f, +0f  , +150f, 250L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH2, iX-100f, iY-125f, +100f, +125f, 350L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH3, iX+100f, iY-125f, -100f, +125f, 125L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH4, iX-150f, iY-45f , +150f, +45f , 500L, duration, "OCULTAR"), delay);
-            new Handler().postDelayed(() -> animarFB(fbH5, iX+150f, iY-45f , -150f, +45f , 0L  , duration, "OCULTAR"), delay);
+        public void ocultarHabilidades (ImageView ivObjetivo, FloatingActionButton[] fbH, Long delay) {
+            new Handler().postDelayed(() -> animarFB(ivObjetivo, fbH, OCULTAR), delay);
         }
 
-        public void animarFB(ImageView imagenObjetivo, FloatingActionButton[] fbH, Integer accion, Long delay) {
+        public void animarFB(ImageView ivObjetivo, FloatingActionButton[] fbH, Integer accion, Long delay) {
 
-            Float alphaFrom;
-            Float alphaTo;
-            Long duration = 500L;
-            Float iX = imagenObjetivo.getX() + (imagenObjetivo.getWidth() / 2) - (fbH1.getWidth() / 2);
-            Float iY = imagenObjetivo.getY();
-
-            if (accion == MOSTRAR){
-                alphaFrom = 0f;
-                alphaTo = habilidad.alpha;
-            } else { // OCULTAR
-                alphaFrom = habilidad.alpha;
-                alphaTo = 0f;
+            Habilidad habilidad;
+            Float iX = ivObjetivo.getX() + (ivObjetivo.getWidth() / 2) - (fbH(0).getWidth() / 2);
+            Float iY = ivObjetivo.getY();
+            
+            for (int i = 0;i++;i<5) {
+                
+                //Animación Alpha
+                habilidad = (Habilidad) fbH(i).getTag();
+                ObjectAnimator alpha;
+                if (accion == MOSTRAR)
+                    alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", 0f, habilidad.alpha);
+                else // OCULTAR
+                    alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", habilidad.alpha, 0f);
+    
+                //Se lleva el botón al personaje objetivo
+                fbH(i).setX(iX);
+                fbH(i).setY(iY);
+    
+                //Animación Transición
+                Path path = new Path();
+                path.moveTo(iX, iY);
+                path.lineTo(iX + FBX(i), iY + FBY(i));
+                ObjectAnimator traslacion = ObjectAnimator.ofFloat(fbH(i), View.X, View.Y, path);
+    
+                //Combinación de Animaciones
+                AnimatorSet animacion = new AnimatorSet();
+                animacion.setStartDelay(FBD(i));
+                animacion.setDuration(500L);
+                animacion.playTogether(traslacion, alpha);
+                animacion.start();
             }
-
-            Path path = new Path();
-            path.moveTo(iX, iY);
-            path.lineTo(iX + oX, iY + oY);
-            
-            ObjectAnimator traslacion = ObjectAnimator.ofFloat(fbH, View.X, View.Y, path);
-
-            
-            AnimatorSet animacion = new AnimatorSet();
-            
-            ObjectAnimator alpha;
-            
-            Habilidad habilidad = (Habilidad) fbH.getTag();
-
-            
-
-            //Se lleva el botón al personaje objetivo
-            fbH.setX(iX);
-            fbH.setY(iY);
-
-            //Establecemos la animación de traslación
-            
-            
-            if (accion == "MOSTRAR") {
-                traslacion.setInterpolator(new OvershootInterpolator());
-                if (nombreHabilidad == "BLOQUEADO" || nombreHabilidad == "NULL")
-                    alpha = ObjectAnimator.ofFloat(fbH, "alpha", 0f, 0.5f);
-                else
-                    alpha = ObjectAnimator.ofFloat(fbH, "alpha", 0f, 1f);
-            } else { // "OCULTAR"
-                traslacion.setInterpolator(new AnticipateInterpolator());
-                if (nombreHabilidad == "BLOQUEADO" || nombreHabilidad == "NULL")
-                    alpha = ObjectAnimator.ofFloat(fbH, "alpha", 0.5f, 0f);
-                else
-                    alpha = ObjectAnimator.ofFloat(fbH, "alpha", 1f, 0f);
-            }
-
-            //Duración y retardo
-            animacion.setDuration(duration);
-            animacion.setStartDelay(fbDelay);
-
-            //Mostramos la animación
-            animacion.playTogether(traslacion,alpha);
-            animacion.start();
-
         }
 
         public void animarHabilidad(Habilidad habilidad, Personaje ejecutor, Personaje objetivo, Long delay) {
