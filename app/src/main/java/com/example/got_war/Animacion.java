@@ -39,8 +39,8 @@ public class Animacion {
             new Handler().postDelayed(() -> animarFB(ivObjetivo, fbH, MOSTRAR), delay);
         }
 
-        public void ocultarHabilidades (ImageView ivObjetivo, FloatingActionButton[] fbH, Long delay) {
-            new Handler().postDelayed(() -> animarFB(ivObjetivo, fbH, OCULTAR), delay);
+        public void ocultarHabilidades (ImageView ivObjetivo, FloatingActionButton[] fbH) {
+            new Handler().postDelayed(() -> animarFB(ivObjetivo, fbH, OCULTAR), 0L);
         }
 
         public void animarFB(ImageView ivObjetivo, FloatingActionButton[] fbH, Integer accion, Long delay) {
@@ -77,6 +77,7 @@ public class Animacion {
                 animacion.start();
             }
         }
+
 
         public void animarHabilidad(Habilidad habilidad, Personaje ejecutor, Personaje objetivo, Long delay) {
             switch (habilidad.getNombre()) {
