@@ -20,10 +20,6 @@ public class Contienda {
     
     private FloatingActionButton[] fbHabilidades;
 
-    /* NOTAS
-
-    */
-
     //Constructor
         public Contienda(Activity context, 
                          Jugador jugador1, 
