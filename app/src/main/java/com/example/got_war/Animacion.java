@@ -24,12 +24,13 @@ import java.util.ArrayList;
 public class Animacion {
 
     //Constantes
-        public static final Integer MOSTRAR = 1;
-        public static final Integer OCULTAR = -1;
-        public static final Float [] FBX = { 0f, -100f, +100f, -150f, +150f };
-        public static final Float [] FBY = { -150f, -125f, -125f, -45f, -45f };
-        public static final Long  [] FBD = { 250L, 125L, 350L, 0L, 500L };
-
+        public static final Integer  MOSTRAR = 1;
+        public static final Integer  OCULTAR = -1;
+        public static final Long     FBDR    = 500L;
+        public static final Long  [] FBDL    = { 250L, 125L, 350L, 0L, 500L };
+        public static final Float [] FBX     = { 0f, -100f, +100f, -150f, +150f };
+        public static final Float [] FBY     = { -150f, -125f, -125f, -45f, -45f };
+        
     // Constructor
         public Animacion(Activity context) {}
 
@@ -57,7 +58,6 @@ public class Animacion {
             
             for (int i = 0;i++;i<5) {
                 
-                Path path = new Path();
                 habilidad = (Habilidad) fbH(i).getTag();
                 
                 if (accion == MOSTRAR) {
@@ -91,6 +91,7 @@ public class Animacion {
                 alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", fbAlphaFrom, fbAlphaTo);
                 
                 //Animación de Traslación
+                Path path = new Path();
                 fbH(i).setX(fbXFrom);
                 fbH(i).setY(fbYFrom);
                 path.moveTo(fbXFrom, fbYFrom);
@@ -100,8 +101,8 @@ public class Animacion {
                 
                 //Combinación de Animaciones
                 animacion = new AnimatorSet();
-                animacion.setStartDelay(FBD(i));
-                animacion.setDuration(500L);
+                animacion.setDuration(FBDR);
+                animacion.setStartDelay(FBDL(i));
                 animacion.playTogether(traslacion, alpha);
                 animacion.start();
             }
