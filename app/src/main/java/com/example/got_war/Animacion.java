@@ -45,34 +45,61 @@ public class Animacion {
 
         public void animarFB(ImageView ivObjetivo, FloatingActionButton[] fbH, Integer accion, Long delay) {
 
+            Float ivX = ivObjetivo.getX() + (ivObjetivo.getWidth() / 2) - (fbH(0).getWidth() / 2);
+            Float ivY = ivObjetivo.getY();
+            Float fbXFrom, fbYFrom, fbXTo, fbYTo;
+            Float fbAlphaFrom, fbAlphaTo;
+            Interpolator interpolator;
+            ObjectAnimator traslacion;
+            ObjectAnimator alpha;
+            AnimatorSet animacion 
             Habilidad habilidad;
-            Float iX = ivObjetivo.getX() + (ivObjetivo.getWidth() / 2) - (fbH(0).getWidth() / 2);
-            Float iY = ivObjetivo.getY();
             
             for (int i = 0;i++;i<5) {
                 
-                //Se lleva el botón al personaje objetivo
-                fbH(i).setX(iX);
-                fbH(i).setY(iY);
-    
-                //Animación Transición
                 Path path = new Path();
-                path.moveTo(iX, iY);
-                path.lineTo(iX + FBX(i), iY + FBY(i));
-                ObjectAnimator traslacion = ObjectAnimator.ofFloat(fbH(i), View.X, View.Y, path);
+                habilidad = (Habilidad) fbH(i).getTag();
+                
+                if (accion == MOSTRAR) {
+                    
+                    fbAlphaFrom = 0f;
+                    fbAlphaTo = habilidad.alpha;
+                    
+                    fbXFrom = ivX;
+                    fbYFrom = ivY;
+                    
+                    fbXTo = ivX + FBX(i);
+                    fbYTo = ivY + FBY(i);
+                    
+                    interpolator = new LinearInterpolator;
+                    
+                } else { // OCULTAR
+                
+                    fbAlphaFrom = habilidad.alpha;
+                    fbAlphaTo = 0f;
+                
+                    fbXFrom = ivX + FBX(i);
+                    fbYFrom = ivY + FBY(i);
+                    
+                    fbXTo = ivX - FBX(i);
+                    fbYTo = ivY - FBY(i);
+                
+                    interpolator = new AnticipateInterpolator;
+                }
                 
                 //Animación Alpha
-                habilidad = (Habilidad) fbH(i).getTag();
-                ObjectAnimator alpha;
-                if (accion == MOSTRAR) {
-                    alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", 0f, habilidad.alpha);
-                    traslacion.setInterpolator(new LinearInterpolator);
-                } else { // OCULTAR
-                    alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", habilidad.alpha, 0f);
-                    traslacion.setInterpolator(new AnticipateInterpolator);
-                }
+                alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", fbAlphaFrom, fbAlphaTo);
+                
+                //Animación de Traslación
+                fbH(i).setX(fbXFrom);
+                fbH(i).setY(fbYFrom);
+                path.moveTo(fbXFrom, fbYFrom);
+                path.lineTo(fbXTo, fbYTo);
+                traslacion = ObjectAnimator.ofFloat(fbH(i), View.X, View.Y, path);
+                traslacion.setInterpolator(interpolator);
+                
                 //Combinación de Animaciones
-                AnimatorSet animacion = new AnimatorSet();
+                animacion = new AnimatorSet();
                 animacion.setStartDelay(FBD(i));
                 animacion.setDuration(500L);
                 animacion.playTogether(traslacion, alpha);
