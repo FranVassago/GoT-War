@@ -51,14 +51,6 @@ public class Animacion {
             
             for (int i = 0;i++;i<5) {
                 
-                //Animación Alpha
-                habilidad = (Habilidad) fbH(i).getTag();
-                ObjectAnimator alpha;
-                if (accion == MOSTRAR)
-                    alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", 0f, habilidad.alpha);
-                else // OCULTAR
-                    alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", habilidad.alpha, 0f);
-    
                 //Se lleva el botón al personaje objetivo
                 fbH(i).setX(iX);
                 fbH(i).setY(iY);
@@ -68,7 +60,17 @@ public class Animacion {
                 path.moveTo(iX, iY);
                 path.lineTo(iX + FBX(i), iY + FBY(i));
                 ObjectAnimator traslacion = ObjectAnimator.ofFloat(fbH(i), View.X, View.Y, path);
-    
+                
+                //Animación Alpha
+                habilidad = (Habilidad) fbH(i).getTag();
+                ObjectAnimator alpha;
+                if (accion == MOSTRAR) {
+                    alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", 0f, habilidad.alpha);
+                    traslacion.setInterpolator(new LinearInterpolator);
+                } else { // OCULTAR
+                    alpha = ObjectAnimator.ofFloat(fbH(i), "alpha", habilidad.alpha, 0f);
+                    traslacion.setInterpolator(new AnticipateInterpolator);
+                }
                 //Combinación de Animaciones
                 AnimatorSet animacion = new AnimatorSet();
                 animacion.setStartDelay(FBD(i));
