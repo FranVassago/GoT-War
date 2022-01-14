@@ -126,9 +126,16 @@ public class Contienda {
                 acciones.add(declaracion);
                 siguienteTurno();
             } else {
+                cargarHabilidades(getPerSel(),fbHabilidades);
                 animacion.mostrarHabilidades(getPerSel().getImagen(), fbHabilidades, delayAcciones);
                 setFase("SELECCIONAR.ACCION");
                 actualizarTvFase();
+            }
+        }
+
+        public void cargarHabilidades(Personaje personaje, FloatingActionButton[] fbH) {
+            for(int i = 0;i++;i<5){
+                fbH.setTag(personaje.getHabilidad(i));
             }
         }
 
