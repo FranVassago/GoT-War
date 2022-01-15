@@ -244,20 +244,24 @@ public class Personaje {
             int acumulados = 0;
             boolean aplicable = false;
     
+            //Se revisa si el personaje ya tiene modificadores con el mismo nombre
             for (Modificador modificador : this.modificadores) {
                 if (modificador.getNombre() == modificadorNuevo.getNombre())
                     acumulados++;
             }
     
+            //Solo se aplica el modificador si no se supera el tope
             if (acumulados < modificadorNuevo.getAcumulativo())
             {
                 modificadores.add(modificadorNuevo);
                 aplicable = true;
             }
             
+            //Se devuelve si ha sido aplicado
             return aplicable;
         }
-    
+
+
         public void actualizarModificadores () {
             for (Modificador modificador : this.modificadores) {
                 this.modAtaque = 0;
